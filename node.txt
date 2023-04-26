@@ -1,0 +1,976 @@
+# Node js
+
+### install 
+
+- install
+
+ + node
+ + npm
+ + HTTPie 
+		$ snap install httpie
+		$ snap refresh httpie
+
+
+### fudamentos-nodejs
+
+- iremos desenvolver uma API RESTful com Node.js focada nos -fudamentos da tecnologia, sem frameworks ou bibliotecas externas.
+- Aprederemos sobre modulos internos do Node.js como HTTP, Crypto e File System e sobre fundamentos HTTP como request, response, headers, status code, route e query parameters, etc.
+- tambem daremos produnidade em Streams no Node.js e como aplica-las para realizarmos operacoes assincronas e parciais em nosso back-end.
+
+- inicializar as configuracoes
+
+ + npm init -y
+ 
+- cria o arquivo package.json que eh o arquivo principal que existe em toda aplication javascript
+
++ src/server.js
+
+- no node agente nao utilizar o padrao de nomeclatura index normalmente para o arquivo principal da nossa aplication 
+- pq como agente esta tratando de criar um 
+
+- **executando** arquivo node no terminal
+
+ +
+	const a = 5;
+	const b = 5;
+	
+	console.log(a + b)
+	
+	terminal
+	node src/server.js
+
+return 
+ 10
+
+- node vem automaticamente com alguns modulos internos, para facilitar o trabalho com algumas coisas que sao muito comuns da gente ter em aplications back-end 
+- uma delas por exemplo
+- modulo HTTP
+
+- **Importando modulo HTTP**
+
+ + const http = reuire('http')
+
+- esse modulo http possui varias funcionalidades para agente contruir aplication HTTP
+
+- Configurando package.json para poder fazer as importacoes da melhor maneira
+
+- package.json
+ +
+{
+  "name": "01-fundamentos-nodejs",
++  "type": "module",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
+
+
+- melhor maneira de fazer a importacao
+
+ + import http from 'http'
+
+- para importar modulus internos do node
+
+ + import http from 'node:http'
+
+- agora vamos comecar criando nosso primeiro servidor HTTP
+- fazer o servidor ficar ouvindo a porta localhost:3333
+
+ +
+import http from 'node:http'
+
+const server = http.createServer((req, res) => {
+  return res.end('Hello World')
+})
+
+server.listen(3333)
+
+- **req**, eu consigo obter todas as informacoes da requisicao que ta chegando no nosso servidor 
+- isso significa
+- se estivermos criando uma rota no nosso servidor para criar um usuario, eu preciso enviar informacoes para nosso servidor como:
+
+ + nome
+ + email 
+ + senha
+ + ...
+ 
+- ou seja atravez do **req** eu vou ter acesso a todas as informacoes da **requisicao** de quem esta chamando o nosso servidor 
+
+- **res** ele vai ser usado para devolver uma resposta para quem esta entao chamando o nosso servidor 
+
+- http://localhost:3333/
+
+### HTTPie - interface linha de comando
+
+- Para fazermos chamadas HTTP no terminal 
+- no terminal
+
+ + http localhost:3333
+
+- ele ja retorna tada a informacao que iria aparecer no browser pelo terminal 
+
+### configurando node para ficar ouvindo a app
+
+- terminal
+ + node --watch src/server.js
+
+- criar alguns scripts automatizados configurando 
+- package.json
+
+ + 
+  "scripts": {
+    "dev": "node --watch src/server.js"
+  },
+
+- para executar
+ + npm run dev
+
+# Estrutura da Aplicacao
+### Rotas HTTP dentro do node
+
+- Rotas de criacao e listagem (metodo HTTP)
+
+- Vamos comecar a conversar um pouco sobre rotas HTTP dentro do nosso servidor back-end dentro do nosso servidor node 
+
+- rotas nada mais sao do que caminhos de entrada dentro da nossa aplication dentro da nossa API
+
+- Quando estamos desenvolvendo uma aplicacao aqui agente vai fornecer essa aplication, utilizar essa aplication para ser consumida por um front-end ou por uma API publica ou qualquer coisa assim
+
+- Agente vai comumente ter varias rotas na nossa aplicacao 
+
+- As rotas elas sao meios de entrada e formas do front-end ou quem ta consumindo nossa API, executar diferentes aplicacoes dentro do nosso back-end 
+
+- Vamos ter rotas para:
+
+ + Criar usuarios
+ + Listagem usuarios 
+ + Edicao de usuarios
+ + Remocao de usuarios
+ 
+- entao eh muito comun agente quando for trabalhar com Rotas ter que intender um pouco como que parece e como que funciona uma requisicao HTTP
+
+- Aqui dentro do node, nao so do node, isso eh fundamental de toda API 
+
+ + HTTP
+ 
+- basicamente uma requisicao HTTP ela eh composta de dois pricipais recursos, eh claro que tem muito mais coisa envolvida
+
+- os dois principais recursos:
+
+ + Metodo HTTP
+ + URL
+ = req
+
+- Quando alguem, o front end principalmente. Faz uma requisicao aqui pro nosso back-end, agente vai obter essas duas informacoes aqui 
+
+- vamos obter essas duas informacoes atravez do req
+
+- methodos mais comuns que serao utilizados 
+
+ + GET
+ + POST
+ + PUT
+ + PATCH
+ + DELETE
+ 
+- Sao metodos muito mais semanticos do que funcionais, eles sao metodos que vamos poder usar qualquer um, mais semanticamente em questao de significado eles se diferem
+
+ + GET = Buscar uma recurso do back-end 
+ + POST = Criar recurso no back-end
+ + put = Atualizar um recurso no back-end
+ + PATCH = Atualizar uma informacao unica ou especifica no back-end
+ + DELETE = Deletar um recurso no back-end
+ 
+- Dentro do nosso back-end agente vai divergir, agente vai diferenciar cada uma das rotas unicamente pela soma do METODO com a URL
+- Ou seja isso que dizer que eu posso ter duas rotas no meu back-end e as duas serem a mesma URL e serem me metodos diferentes
+
+ + GET /users = Busncado usuarios do back-end
+ + POST /users = Criando um usuario no back-end
+
+- testando 
+
+$
+import http from 'node:http'
+
+const server = http.createServer((req, res) => {
+  const { method, url } = req
+
+  if (method === 'GET' && url === '/users') {
+    return res.end('Listagem de usuarios')
+  }
+
+  if (method === 'POST' && url === '/users') {
+    return res.end('Criacao de usuario')
+  }
+  
+  return res.end('Hello')
+})
+
+server.listen(3333)
+
+
+- 1 terminal
+
+$ 
+	npm run dev
+
+- 2 terminal
+
+$ 
+	http POST localhost:3333/users
+
+
+### Salvando usuários em memória (Headers)
+
+- Vamos salvar os usuarios, conforme agente estiver listando e criando novos usuarios dentro da memoria da nossa aplication 
+
+- o que eu quero dizer como memoria eh que no node como nosso projeto fica executando aqui ate que alguem venha aqui e pare o projecto usando um crtl+C
+
+- tudo que eu declarar de variavel dentro desse projecto, vai ficar salvo em memoria, agente chama isso de um conceito de aplication chamada Stateful
+
+ + Stateful != Stateless
+ 
+- a diferenca entre elas
+
+- Stateful = Sempre vai ter algum tipo de informacao sendo guardada em memoria, ou seja a aplicacao depende da memoria, depende de informacoes que sao salvas em memoria para que ela continue funcionando e apartir do momento que essas informacao for derrubada e perder o seus dados em memoria, ela pode funcionar de maneira diferente do que ela estava funcionando antes 
+
+- Stateless = Ela nao salva nada em memoria, ela vai salvar essas informacoes em dispositivos externos como banco de dados, arquivos de texto ou qualquer coisa assim, independente se agente parar a aplicacao e rodar ela dinovo, os dados, arquivos e qualquer tipo de funcionamento, vao se manter igual, nao vai ter qualquer tipo de problema 
+
+- por enquanto vamos criar uma aplicacao do estilo Stateful onde os dados da aplicacao sao armazenados localmente em memoria 
+
+- Cabecalhos (Requisicao/Responsta) = Metadados
+
+ + Metadados sao informacoes para que tanto o back-end quanto o front-end saiba lidar com aquela requisicao da melhor forma 
+ 
+ + Cabecalhos sao informacoes adicionais que nao tem haver com o dado retornado do back-end para o front-end, mais sim de como que aquele dado pode ser interpretado pelo front-end 
+
+
+### Conhecendo HTTP status codes
+
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
+
+- Quando agente devolve uma resposta para o front-end ou seja apos o front-end executar alguma rota aqui da nossa aplicacao, por exemplo 
+
+ + uma listagem de usuarios 
+ + uma criacao de usuario
+ + uma remocao de usuario 
+ 
+- agente tem varios tipos de codigos numericos que agente pode enviar para o front-end para dizer para o front-end nao so pelo texto que agente envia mas para comunicar com o front-end que aquela requisicao deu 
+
+ + certo
+ + erro
+ + erro = qual o tipo de erro 
+ + certo = o que o front-end vai conseguir encontrar de informacao 
+ + erro = por falta de info
+ + erro = inesperado / banco de dados fora do ar
+
+- HTTP response status codes indicate whether a specific HTTP request has been successfully completed. Responses are grouped in five classes:
+
+ + Informational responses (100 – 199)
+ + Successful responses (200 – 299)
+ + Redirection messages (300 – 399)
+ + Client error responses (400 – 499)
+ + Server error responses (500 – 599)  	
+
+- os Status Code que mais vamos usar sao
+
+ + 200 - 299
+ + 400 - 499
+ 
+
+
+### Entendendo Streams no Node
+
+- Stream
+
+- Stream conceito que fez o node ser o que ele eh hoje e conseguir resolver problemas que na epoca outras tecnologias ou nao resolviam pelo modelo que eram setadas ou resolviam de uma forma muito complexas 
+
+- node trouxe isso com tanta simplicidade e performance que hoje eh utilizado por varias empresas para fazer esse tipo de funcionalidade 
+
+- pensando em Stream
+
+ + Netflix
+ + spotify
+ 
+- Conceito de stream eh conseguir obeter pequenas partes, ler pequenas partes de alguma coisa e ja conseguir trabalhar com aqueles dados, mesmo antes de ler o arquivo por completo 
+
+- node permite fazer isso de uma maneira simples e fenomenal extremamente performatica 
+
+- stream diferente seria
+- Importacao de clientes via CSV (excel)
+
+- fornecendo para o usuario uma possivel importacao, o nosso sistema le o arquivo e comeca a salvar esses dados dentro do banco de dados 
+
+- imaginamos que agente suba um CSV para dentro do meu sistema node por exemplo, contento um 1gb
+- se nao estivermos usando o sistema de stream e permitir que isso aconteca 
+- o que ira acontecer 
+- o usuario na aplicacao front-end vai subir o CSV e o CSV vai ser enviado para nossa aplicacao back-end atraves de uma rota POST por exemplo enviando usando uma rota POST
+
+- POST /upload import.csv
+
+- o node por sua vez se agente nao estiver usando o conceito de stream, ele vai ler esse arquivo por completo ou seja ele vai precisar ler 1gb de arquivo depois que ele ler esse 1gb de arquivo ele vai percorrer esse arquivo de 1 gb	, fazendo cada uma das opercoes descritas no banco de dados 
+
+- o problema eh que o arquivo de 1gb 
+- iria demorar em media um 100s para conseguir subir esse arquivo
+
+- ou seja sem o conceito de stream agente vai precisar esperar 100s para o upload do arquivo ser totalmente finalizado para entao o node comecar a ler esse arquivo e comecar a fazer as insercoes do banco de dados
+
+- Quando trabalhamos com conceito de stream nesse exemplo 
+
+- enquanto eu to fazendo o upload do arquivo, cada parte que ja foi feita o upload ja vai sendo inserida no banco de dados
+
+- e eh examente isso que eh o conceito de stream 
+
+- consiguir ler os dados que estao provindo da minha requisicao http do meu upload aos poucos, e processando ele enquanto o arquivo ainda ta sendo feito upload 
+
+- ou seja enquanto o arquivo esta sendo enviado pelo servidor eu ja consigo processar os dados e as informacoes contidas dentro desse arquivos.
+
+### 2 difentes modelos de Stream
+- 2 tipos mais comuns do node
+
+- Readable Stream = stream de leitura 
+
+ + arquivo de 1gb .CSV (excel)
+
+- Writable Stream = Stram de escrita 
+
+ + spotify
+ + netflix
+
+
+### Criando stream de leitura
+
+- No node toda porta de entrada e saida eh automaticamente uma stream, isso eh super importante.
+
+- por exemplo no servidor HTTP que agente estava desenvolvendo 
+
+ + req
+ + res
+ 
+- sao stream no final das contas 
+- ou seja quando eu faco uma requisicao HTTP para um servidor node eu posso manter esse requisicao HTTP aberta e enviar dados para ela aos poucos assim quando eu vou devolver uma resposta do node pro nosso front end do back-end pro front-end eu posso devolver a respota aos poucos, eu nao abrigatoriamente preciso devolver a resposta tudo de uma vez so...
+
+- foi o exemplo que demos do **netflix/spotify e de um CSV**
+- Eu consigo enviar e receber informacoes aos poucos 
+
+- no node agente tem varias portas de entrada e saida
+- porta de entrada e saida muito comum eh **req , res**
+- quando agente trabalha com um servidor HTTP
+
+- Mas para explicarmos os fundamentos das strems agente vai trabalhar com outro modelo de entrada e saida de dados do node que eh o **processo do node**
+
+- Processo do node
+- que eh o **STDIN / STDOUT** que eh exatamente o que agente digita no terminal 
+
+- **STDin** stream de leitura eh tudo que o usuario digita no terminal, isso eh uma stream readable
+
+- o que eh muito comum no node eh conectar essas streams, eu posso ler dados aos pouco e eu posso enviar esses poucos dados que eu estou lendo de pouquinho em pouquinho para um stream que vai tratar esses dados, que vai ler esses dados e vai tratar esses dados da maneira que precisa ser tratado 
+
+- para executar o stream
+
+$ node streams/fundamentals.js
+
+- podemos ver que nossa aplicacao fica rodando 
+- agora tudo que eu digito no terminal, ele digita dinovo automaticamente 
+
+- tudo que eu estou recebendo como entrada, eu estou encaminhando para pipe para uma saida o **stdout**
+
+- **stdout** writeble stream, stream de escrita
+
+ process.stdin
+   .pipe(process.stdout) 
+
+- **.pipe** - Encaminha os dados provindos de uma stream para outra
+
+
+### Construindo Streams do total zero
+
+- podemos pensar essa stream como se fosse um processo comum do nosso dia-a-dia
+- de ler um arquivo no sistema 
+- receber um arquivo de upload do front-end 
+- o proprio **process.stdin** 
+
+- Stream de leitura ela tem como funcao enviar dados, fornecer informacoes 
+
+- **push** eh o metodo que agente utiliza para uma stream para uma Readable Stream 	fornecer infomacoes para quem estiver consumindo ela 
+
+- vamos trabalhar com o formato de buffer
+
+# Stream Leitura
+- **Stream Leitura**
+$
+
+import { Readable } from 'node:stream'
+
+class OneToHundredStream extends Readable {
+  index = 1
+  
+  _read() {
+    const i = this.index++
+
+    setTimeout(() => {
+      if (i > 100) {
+        this.push(null)
+      } else {
+        const buf = Buffer.from(String(i))
+  
+        this.push(buf)
+      }
+    }, 1000)
+  }
+}
+
+
+new OneToHundredStream()
+  .pipe(process.stdout)
+
+
+### Stream de escrita e transformação
+
+- dentro de uma stream de escrita agente nao retorna nada 
+- ela somente processa o dado, ela nunca vai transformar o dado em alguma outra coisa, vai apenas processar o dado
+
+# Stream Escrita
+- **Stream Escrita**
+
+$
+class MultiplyByTenStream  extends Writable {
+  _write(chunk, encoding, callback) {
+    
+  }
+}
+
+- **chunk** eh o pedaco que agente leu da stream de leitura, ou seja eh o que eu esotu enviando dentro do 
+- this.push(buf)
+- tudo enviado apartir desse condigo eh um chunk ou seja eu posso ler esse chunk dentro da minha stream de escrita
+
+- **encoding** eh como que essa informa ta codificada 
+
+- **callback** eh uma funcao que a Stream de escrita precisa chamar quando ela terminou de fazer o que ela precisava fazer com aquela informacao 
+
+
+
+import { Readable, Writable } from 'node:stream'
+
+class OneToHundredStream extends Readable {
+}
+
+class MultiplyByTenStream  extends Writable {
+  _write(chunk, encoding, callback) {
+    console.log(Number(chunk.toString()) * 10)
+    callback()
+  }
+}
+
+new OneToHundredStream()
+  .pipe(new MultiplyByTenStream)
+
+
+# Stream Transform
+- **Stream Transform**
+
+- A Stream de leitura eu so consigo ler dados dela 
+- A Stream de escrita eu so consigo escrever dado para ela
+- A Stream de transformacao, ela obrigatoriamente precisa ler dados de um lugar e escrever dados para outro lugar.
+
+- Transformacao eh uma stream utilizada no intermio para comunicao entre duas outras streams 
+
+- Buffer eh uma forma de transicionar dados entre Streams eh um modelo que o node usa para transicionar informacoes entre Streams para nao ter que enviar streams inteiros 
+
+
+$
+
+import { Readable, Transform, Writable } from 'node:stream'
+
+class OneToHundredStream extends Readable {
+  index = 1
+  
+  _read() {
+    const i = this.index++
+
+    setTimeout(() => {
+      if (i > 100) {
+        this.push(null)
+      } else {
+        const buf = Buffer.from(String(i))
+  
+        this.push(buf)
+      }
+    }, 1000)
+  }
+}
+
+class InverseNumberStream extends Transform {
+  _transform(chunk, encoding, callback) {
+    const transformed = Number(chunk.toString()) * -1
+
+    callback(null, Buffer.from(String(transformed)))
+  }
+}
+
+class MultiplyByTenStream  extends Writable {
+  _write(chunk, encoding, callback) {
+    console.log(Number(chunk.toString()) * 10)
+    callback()
+  }
+}
+
+
+
+new OneToHundredStream()
+  .pipe(new InverseNumberStream())
+  .pipe(new MultiplyByTenStream())
+
+
+### Stream Duplex
+- **Stream Duplex**
+
+- **ler e escrever**
+- acaba nao sendo utilizado na grande maioria dos casos
+
+- Ela pode ter tanto o metodo de leitura,
+- quanto o metodo de escrita
+- ou seja ela pode fazer qualquer tipo de operacao
+
+- podemos pensar no stream duplex como um arquivo fisico do nosso sistema 
+
+- um arquivo fisico no nosso sistema agente pode tanto ler ele como escrever nele
+- mas nao necessariamente agente pode transformar algo dentro dele 
+
+### Aplicando Streams no módulo HTTP
+
+- tudo no node sao Stream todas as portas de entrada e saida sao stream 
+
+- **req** = ReadableStream
+- **res**	= WritableStream 
+
+
+- run node
+$ node streams/stream-http-server.js 
+
+
+- agente consegue abrir um canal de input de dados 
+- ou seja de envio de dados para dentro do nosso servidor http
+- e nao fechar esse canal manter ele aberto agente pode enviar mais informacoes receber respostas e por ai vai 
+
+
+
+### Consumindo uma stream completa
+
+- Em alguns casos eu quero conseguir na minha aplicacao quando eu to trabalhando com streams ler todos os dados da stream antes de processar esses dados, antes de trabalhar esses dados
+- Imagina que eu to recebendo uma informacao da minha Stream so que eu preciso dessa minha informacao por completo para entao eu conseguir trabalhar com esses dados 
+
+- existe uma sintaxe para conseguir trabalhar com isso dentro do node
+
+- agente cria um array de buffers
+- ou seja 
+- que sao os pedacinhos que agente vai receber da stream
+- percorre essa stream populando esse buffers e depois trabalha com o array de forma completa 
+
+- basicamente o que vamos fazer aqui eh percorrer a minha stream de req dentro do servidor http 
+
+- essa sintaxe ela eh pouco conhecida mais eh muito legal 
+
+$ for await ()
+
+- o await dentro de uma stream, ele aguarda cada pedaco da stream ser retornado 
+
+- essa sintaxe me permite percorrer cada pedacinho da stream da minha req e adicionar esse pedacinho dentro do meu array de buffers 
+
+- no final quando tudo isso estiver capitado e o awaite nao vai permitir que nada execute enquanto o carregamento da stream nao finalizar 
+
+- depois disso eu quero ver o conteudo por completo 
+
+$
+const server = http.createServer(async (req, res) => {
+  const buffers = []
+
+  for await (const chunk of req) {
+    buffers.push(chunk)
+  }
+
+  const fullStreamContent = Buffer.concat(buffers)
+
+  console.log(fullStreamContent)
+
+  return res.end(fullStreamContent)
+
+})
+
+
+- funciona bem quando agente depende de consumir uma informacao por completo, para entao conseguir trabalhar com os dados 
+- existem varios tipos de arquivos que possuem meta dados no meio do arquivo 
+- voce nao consegue trabalhar com esse arquivo de forma parcial digamos assim 
+- tem varias situacoes que agente vai trabalhar com esse tipo de informacao 
+
+- um dos tipos de dados que eh impossivel consumir por partes, eh possivel mais eh muito inviavel
+- eh o formato de json 
+
+
+
+### Insomnia Corpo da requisição em JSON (Stream & Buffers)
+
+**Insomnia**
+- Insomnia eh um Rest Client 
+- Eh uma aplicacao que permite agente fazer chamadas HTTP dentro da nossa maquina para alguma API 
+
+
+- open insomnia
+
+- dashboard
+- create
+- create new request collection
+ + Ignite node.js 01
+- +
+- http request
+- named = Create user
+- essa rota ira usar o metodo POST
+- POST http://localhost:3333/users
+
+- start server in vscode
+ $ npm run dev
+
+- in insomnia
+- click in send
+- send
+- POST - http://localhost:3333/users (Send)
+$
+	return 
+	201 create
+
+- Significa que ele esta criando o usuario 
+
+- podemos dublicar a requisicao no Insomnia
+- e renomea-la
+- List users
+- create
+- troca o metodo para 
+- GET
+- Click in send
+- send
+$ 
+	return
+	200 ok
+[
+	{
+		"id": 1,
+		"nome": "John Doe",
+		"email": "johndoe@example.com"
+	}
+]
+
+- usuario criado com sucesso
+
+- in Insomnia
+- no corpo da requisicao existem varios formatos para enviar de corpo
+- quando estamos trabalhando especificamente com API, esse formato REST de comunicacao front-end e back-end agente preferencialmente quer usar o formato JSON
+
+- Usar JSON 
+
+- Que eh a estrutura de dados mais global para trabalhar na comunicacao de front com back-end ou ate entre dois back-end 
+
+- a estrutura de dados que eu vou usar para enviar o nome e o email do usuario eh um objeto 
+- eh a estrutura que mais me ajuda a representar um conjunto de informacoes 
+
+- BODY - JSON
+$
+{
+	"name": "Diego Fernandes",
+	"email": "diego@rocketseat.com.br"
+}
+
+- send
+
+
+
+- Vamos utilizar o conceito que aprendemos de ler todos os dados da Stream para buscar esses dados aqui do corpo da nossa requisicao e converter isso aqui em uma estrutura que seja legivel ali pelo nosso codigo 
+
+
+- transformar um JSON ja criado uma estrutura legigel pelo javascript, um objeto um array, algum tipo primitivo do js 
+
+  const body = **JSON.parse**(Buffer.concat(buffers).toString())
+
+
+- in insomnia
+- create users 
+- send
+- list users 
+- send
+
+- Utilizadmos o conceito de leitura de Streams 
+- para que agente consiga ler todo o corpo da nossa requisicao 
+- depois que eu corpo tiver lido por completo 
+- agente faz um **JSON.parse**
+- Ou seja
+- agente transforma o corpo da requisicao 
+- em um objeto js, em um tipo primitivo do js 
+- objeito ou um array
+- ira utilizar dos dados na hora da criacao do usuario
+- 		const { name, email } = req.body
+
+
+### Entendendo Buffers no Node
+
+- Buffer eh uma representacao de um espaco na memoria do computador 
+- usado especificamente para transitar dados de uma maneira muito rapida 
+
+- os dados armazenados no buffer, eles sao armazenados ali para logo eles serem tratados 
+- ou seja enviados para algum outro lugar
+- e depois logo removidos 
+
+- sao maneira dagente conseguir salver e ler da memoria de uma maneira muito perfomatica 
+
+- Ela eh muito performatica pq o node utiliza esse modelo de Buffer na leitura e na escrita de Streams pq eh mais performatico voce, 
+- ler parcialmente uma informacao de forma binaria que eh como o buffer guarda na memoria, ele guarda os dados de uma maneira binaria 
+- do que necessariamente um texto, uma string
+
+- Buffer eh uma API criada dentro do node, especificamente pela incapacidade do js de trabalhar com dados binarios de maneira eficiente
+
+- Buffer eh uma maneira mais eficiente e mais performatica da gente escrever e ler da memoria, conversando de uma maneira binaria, conversando de uma maneira mais baixo nivel, para gente nao precisar escrever ou ler da memoria de uma maneira de mais alto nivel como um texto ...
+
+
+- representado de maneira binaria usando hexadecimal
+
+
+### Criando middleware de JSON
+
++ src/middlewares/json.js
+
+- **middlewares**
+- Interseptador, eh uma funcao que ela vai interceptar nossa requisicao 
+
+- middlewares
+$   await json(req, res)
+
+- e os middles sao faceis de serem conhecidos pq, ele sempre vai receber como parametro o (req, res)
+- e o req e res sao tratados 
+
+
+- middlewares/json.js
+- criamos um unico arquivo que ele lida, tanto com o json de entrada, ou seja, converte o corpo da nossa requisicao em json aqui na entrada, tanto quanto tambem, ja devolve os dados em json 
+- ja fala pro nosso front-end que os dados vao ser sempre devolvidos em json 
+
+
+### Criando banco de dados JSON
+
+- criar banco de dados completo baseado em arquivos fisicos 
+
+- toda vez que nossa aplicacao reinicia aqui, agente perde todos os dados 
+- como poderiamos fazer para nao perder todos os dados, quando nossa aplicacao reiniciar 
+
+- uma das forma eh salvando esses dados de usuario que agente esta salvando ali naquele array, dentro aqui de um arquivo fisico mesmo,
+- de um arquivo na nossa aplicacao e assim quando nossa aplicacao iniciar, ela le esse arquivo e popula esse banco de dados com o dados que ja existiam anteiormente, quando agente for salvar uma nova informacao no nosso banco de dados, ou atualizar alguma informacao, ou deletar, seja la o que for 
+- o arquivo sera atualizado com as alteracoes possoveis 
+
++ src/database.js
+
+export class Database {
+  database = {
+    
+  }
+}
+
+- o que eu quero que dentro desse objeto database, mais pra frente 
+- { "users:" [...] }
+
+#database = propriedade privada da class
+
+
+
+### Persistindo banco de dados
+
+- Dando continuidade ao desenvolvimento da classe Database, para salvar os dados nos arquivos e também fazer a leitura, vamos utilizar o módulo fs (File System) nativo do Node.js.
+
+- Persistir o banco de dados nos arquivos fisicos, toda vez que fizer qualquer modificacao, na nossa class, na nossa propriedade de banco de dados eu salvo isso para reiniciar nossa aplicacao eu ter esses dados disponiveis 
+
+- para trabalhar com arquivos fisicos dentro do node agente vai precisar trabalhar com um modulo interno de File System fs
+
+$ import fs from 'node:fs/promises'
+
+- esse metodo sera chamado toda vez que salvar algo no banco de dados o persist
+$ 
+  #persist() {
+    fs.writeFile('db.json', JSON.stringify(this.#database))
+  }
+
+- para toda vez que inserir um novo registro eu salve nos arquivos fisicos 
+
+- create users
+- send
+- db.json foi criado com os dados criados
+
+const databasePath = new URL('../db.json', import.meta.url)
+
+
+  #persist() {
+    fs.writeFile(databasePath, JSON.stringify(this.#database))
+  }
+
+- cria o db.json na raiz do projeto 
+
+
+### Criando ID único e universal (UUID)
+
+
+Utilizando o módulo crypto do Node.js e a função randomUUID, vamos gerar um UUID (Universally unique identifier) para cada usuário criado.
+
+$ 
+
+import { randomUUID } from 'node:crypto'
+
+    const user = {
+      id: randomUUID(),
+      name,
+      email,
+    }
+
+### Separando rotas da aplicação
+
+Para organizar as rotas da aplicação e evitar a criação de diversos if, vamos organizar as rotas em um outro arquivo e refatorar a validação para qual roda deve ser executada de acordo com esse novo arquivo.
+
+ + src/routes.js
+
+import { Database } from "./database.js"
+import { randomUUID } from 'node:crypto'
+
+const database = new Database()
+
+export const routes = [
+  {
+    method: 'GET',
+    path: '/users',
+    handler: (req, res) => {
+      const users = database.select('users')
+        
+      return res.end(JSON.stringify(users))
+    }
+  },
+  {
+    method: 'POST',
+    path: '/users',
+    handler: (req, res) => {
+      const { name, email } = req.body
+
+      const user = {
+        id: randomUUID(),
+        name,
+        email,
+      }
+      database.inset('users', user)
+
+      return res.writeHead(201).end()
+    }
+  },
+]
+ 
+### Route e Query parameters
+
+- Existem diversas formas de enviarmos informações para uma API. Nessa aula vamos aprender sobre elas e iniciar o desenvolvimento da estrutura para acessarmos essas informações.
+
+ + Query Parameters: URL Stateful 
+		- filtros, paginacao, nao obrigatorios
+ + Route Parameters
+		- Identificao de Recurso
+ + Request Body
+		- Envio de informacoes de um formulario (HTTP's)
+
+- **Query Parameters** sao parametros nomeados que agente envia no proprio endereco da requisicao, neste caso
+- http://localhost:3333/users?usersId=1&name=Diego 
+- usamos quando precisamos ter um URL stateful
+
+- **Route Parameters** nao nomeados que ficam na rota, como isso quer dizer.
+- imagina que tenho um endereco:
+- GET - http://localhost:3333/users/1
+- DELETE - http://localhost:3333/users/1
+
+- **Request Body** pode ser usado para o envio de quantas informacoes agente quiser 
+- POST - http://localhost:3333/users/
+
+
+ + Edicao e Remocao de Dados
+
+### Criando regex dos parâmetros
+
+- gerador dinamico de caminhos das rotas
+- para que agente consiga interpretar e intender os ID's que podem vir, nao so id mais qualquer info, nos Route Paramters
+
+- Geralmente no node e em outra tecnologias agente identifica esses parametros na rota com :
+
+- path: '/users/:'
+
+- Entao toda vez que agente tem : no caminho da rota, significa que eu vou receber um parametro dinamico, uma informacao dinamica, que ela pode ser qualquer valor, digamos assim 
+- ai eu dou um nome para ela como ID, para simbolizar que isso aqui eh o id do usuario 
+
+- path: '/users/:id',
+
+- **Regex** eh uma expressao regular, eh uma forma da gente encontrar textos que seguem um formato especifico dentro de um texto que eh muito maior 
+- ou seja, eu quero encontrar dentro desse texto aqui, todas as variaveis, todos os parametros que tem : na frente
+
+- basicamente como funciona o Regex
+- Eu quero encontrar nesse texto aqui, tudo que comece com : e depois dos : tem letras de a-z que podem ser minusculas ou letras A-Z que podem ser maiusculas e essas letras podem repetir uma ou mais vezes 
+
+ + src/utils/build-route-path.js
+ 
+
+- const routeParametersRegex = /:([a-zA-Z]+)/  
+ 
+
+
+### Rotas com parâmetros (RegEx)
+
+- Agora que temos uma RegEx para identificar os locais que devem aceitar parâmetros, vamos construir outra RegEx para aceitar de fato esses parâmetros.
+
+RegEx utilizada:
+
+(?<$1>[a-z0-9\-_]+)
+
+
+### Remoção de registros
+
+- Agora que já concluímos a manipulação da URL por meio das RegEx, vamos obter o id de um usuário e criar a rota para remover ele.
+
+### Atualização de registros
+
+- Seguindo a mesma ideia das rotas POST e DELETE, vamos recuperar o id do usuário por meio de req.params e também as informações de name e email do req.body para atualizar o registro de um usuário.
+
++ duplacate Create user
++ rename PUT - Update user
++ List users - send
++ in Update user
++ mudar nome do usuario
+
+### Capturando query parameters
+
+- Anteriormente explicamos sobre 3 diferentes formas de receber informações em uma API. Atualmente estamos tratando e acessando duas delas, Route Params e o Body.
+
+Nessa aula vamos tratar para acessarmos os Query Params.
+
+RegEx utilizada:
+
+(?<query>\\?(.*))?$
+
+- 3 formas de enviar informacoes para nossa API
+
+ + Route parameters
+		- Sao parametros enviados na propria URL e nomeados, usando parametro obrigatorios da URL :
+		$ path: buildRoutePath('/users/:id'),
+
+ + Request body 
+		- informacoes enviadas no corpo da requisicao
+		$ const { name, email } = req.body
+
+ + Query parameters
+		- Sao os parametros opcionais, feitos para paginacao, filtragem e por ai vai 
+
+
+ + src/utils/extract-query-params.js
+
+### Filtrando lista do banco de dados
+
+- Acessando os Query Params, vamos implementar um filtro na listagem de usuários.

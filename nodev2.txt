@@ -1,0 +1,2437 @@
+# Nodejs v2
+
+### Criando API REST com Nodejs
+
+- Nesse modulo iremos desenvolver uma API REST, mas dessa vez utilizando o Fastify, Knex, TypeScript e outras ferramentas para auxiliar durante o desenvolvimento
+
+
+### Conhecendo o Fastify
+
+- Nesse projecto iremos utilizar uma micro framework pra dentro do node, chamado Fastify
+
+- **Fastify**
+- muito parecido com o **Express**
+
+- O grande proposito dessas duas tecnologias eh trazer para gente essa parte mais tradicional onde agente precisa utilizar na construcao de uma API, de uma aplicacao Web dentro do node, seja
+
+ + Lidar com rotas, 
+ + Lidar com parametros
+ + Lidar com Plugins externos
+ + Respostas em JSON 
+ + Requisicoes em JSON
+ 
+- sao coisas que sim, podemos contruir na mao, so que nao vale a pena contruir todo o projecto do zero 
+
+- Beneficios do Fastify em comparacao com o Express 
+
+ + Muito mais bem mantido que o express
+	- muito mais updates acontecendo no Fastify
+	- muito mais ativo lancando novas features
+	- time mais ativo
+	- dando manutencao 
+	- mantendo a comunidade dentro do Fastify
+
+ + Uma das opcoes mais populares dentro do node 
+	- sua API eh extremamente semelhante ao express 
+
+ + Alem de ser mais performatico, ele esta mais pronto para lidar com novas funcionalidades do javaScript
+	- como por exemplo o TypeScript, onde ele ja tem uma integracao direta com o TS 
+	- enquanto no express precisamos instalar uma biblioteca terceira
+	- Ele esta muito mais pronto para lidar tbm com o assyncronismo do javaScript, mais moderno ou seja, trabalhar com o **promisses, assync, await**
+
+
+### Entendendo o TypeScript
+
+- O que é o TypeScript? A onde ele vive? O que ele come? Hoje, no Globo Repórter…
+
+Brincadeiras a parte, nessa aula aprenderemos sobre o TypeScript, como ele nos ajuda durante o desenvolvimento e fazer o build para JavaScript.
+
+
+- TypeScript eh um super set, um adioconal ao javaScript, onde agente consegue trabalhar com tipagem statica 
+
+- nada mais eh do que conseguir trazer mais inteligencia para nosso codigo, na hora que estamos escrevendo ali a aplicacao 
+
+- podendo evitar que alguns erros vao para producao 
+- muita das coisas que agente desenvolve localmente, agente vai descobrir algum erro pq agente enviou algum paramtro errado, ou coisa assim para uma funcao, so descobre quando vai pra producao ou as vezes ate mesmo o proprio usuario tem que avisar para gente que encontrou um erro 
+
+- isso eh extremamente ruim
+- o typeScript consegue evitar que agente cometa a grande maioria desses erros bobos digamos assim, antes do codigo sair do setor de desenvolvimento e ir pra producao 
+
+- TypeScript eh um linguagem de programacao fortemente tipada 
+- que converte o codigo final para javaScript
+
+
+
+### start project
+
+ + 02-api-rest-noe
+ $ npm init -y
+ 
+ + src/index.js
+
+
+### Install TypeScript
+- install como dependencias de Desenvolvimento o TypeScritp
+
+$ npm i -D typescript
+
+- precisamos criar um arquivo de configuracoes do TypeScript
+- para isso eu posso automatizar esse trabalha executando o comando
+
+$ npx tsc --init
+
+- cria um arquivo 
+
+ + tsconfig.json
+
+- entrando no tsconfig.json
+- vamos editar o
+
+ + "target": "es2016"
+- to
+ + "target": "es2020"
+
+- agora vamos converter nosso codigo 
+- basta executar o codigo
+
+ + npx tsc src/index.ts
+ 
+- ira converter o nosso codigo para javaScript 
+- podemos executar o arquivo converteido usando o node facilmente
+
+ $ node src/index.js
+ 
+
+
+### Criando aplicação
+
+- Nessa aula vamos de fato criar a aplicação utilizando o npm e adicionar os pacotes iniciais.
+
+- converter o index para server
+
+ + src/index.js
+- to
+ + src/server.js
+ 
+- install fastify
+- eh o framework que vamos usar para dar a base da nossa aplicacao web
+
+ $ npm i fastify
+
+- vamos trocar o codigo inteiro da aplicacao
+- src/serve.ts
+$ 
+import fastify from "fastify";
+
+const app = fastify()
+
+app.
+
+
+- Chamando a funcao fastify
+- Isso cria a base da nossa aplicacao 
+
+- Com essa variavel app 
+- podemos partir para fazer todas as funcionalidades simples que uma aplicacao web tem
+
+- que eh principalmente a parte de rotas
+- **rotas**
+
+- lembrando
+- existem 5 principais metodos que usamos em uma API REST 
+
+ + GET
+ + POST
+ + PUT
+ + PATCH
+ + DELETE
+
+- dentro de app. quando eu dou um espaco
+- todos esse metodos vao estar disponiveis 
+
+$ app. + space
+
+ + app.get
+ + app.post
+ + app.put
+ + app.patch
+ + app.delete
+ 
+- se eu quero criar uma primeira rota da minha aplicacao 
+- por exemplo
+- http://localhost:3333/hello
+
+- eu uso **app.get()** que no caso eh um metodo que eh uma funcao, entao chamamos ela
+- **primeiro parametro**, passo o recurso que no caso eh o hello, que eh o que vem depois do endereco
+- **segundo parametro**, que vai devolver uma resposta
+- por exeplo um hello word
+
+$ 
+
+app.get('/hello', () => {
+  return "hello world"
+})
+
+
+- no final vamos usar o app.listen()
+- que eh para passar nossa aplicacao ouvir a porta
+- no caso a porta 3333
+
+$ 
+	app.listen({
+	  port: 3333,
+	}).then(() => {
+	  console.log('HTTP Server Running!')
+	})
+
+- entao eu passo para esse listen um objeto e envio para ele a porta 3333
+- no final coloco um .then()
+- pq o listen(), retorna uma promisses JavaScript
+- eu quero saber quando essa promisse terminou de ser executada
+- para eu dar um console.los()
+$ console.log('HTTP Server Running!')
+
+
+- agora para conseguir executar esse codigo
+- primeiro converter o codigo de ts para js
+
+ $ npx tsc src/server.ts
+
+- gerarao muitos erros
+- para corrigir esses erros 
+- estao dando erros nos modulos especificos do node
+
+- o que acontece, como o node nao foi construido com o TypeScript
+- ele foi construido especificamento so pra JavaScript
+- quando agente usa o node com o TypeScript
+- eh necessario que agente instale junto como dependencia de desenvolvimento
+- o pacote
+
+ $ npm install -D @types/node
+ 
+ 
+- instalando esse pacote, quando eu executar novamente 
+
+ **$ npx tsc src/server.ts**
+ 
+- vai gerar sem erros o arquivo
+
+ + src/server.js
+ 
+- agora podemos executar o nosso codigo
+
+ **$ node src/server.js**
+
+- ele vai rodar
+- HTTP Server Running!
+
+- agora se eu faco uma requisicao no Terminal para a rota 
+
+ $ 	http localhost:3333/hello
+
+- ela retorna
+- Hello World
+
+- caso queira ver pelo navegador
+- caso nao queira utilizar o httpie.io que estamos usando ali, para fazer requisicao pelo terminal 
+
+- basta abrir o browser e digitar no navegador
+$ localhost:3333/hello
+
+
+### Forma correta TSX em desenvolvimento
+- podemos automatizar esse processo de converter os ts para js
+- uma ferramenta chamada tsx
+- install tsx
+
+$ npm install tsx -D
+
+- o tsx o que ele faz eh esse processo de converter nosso codigo para JavaScript e executar o node no JavaScript convertido
+- de forma automatizada
+- e sem sujar as nossas pastas
+
+- vamos deletar o server.js
+
+- tsx so eh utilizado em desenvolvimento 
+- nao iremos utilizar em producao
+- ja em producao o melhor dos caso de producao eh converter o nosso arquivo ts para js
+- agora para executar
+- **Executando Arquivo tsx**
+
+ **$ tsx src/server/ts**
+ 
+- eh como se eu estivesse executando ja o node direto do arquivo ts
+- executando tudo da mesma forma
+
+### Criando Script execucao tsx
+
+- automatizar a execucao do tsx
+
+$ 
+  "scripts": {
+    "dev": "tsx watch src/server.ts"
+  },
+
+- para executar
+
+$ npm run dev
+
+
+
+### Configurando ESLint
+
+- Ainda configurando o projeto, vamos adicionar o ESLint para forçar uma padronização no projeto.
+
+- ESLint eh um processo de padronizar o codigo 
+- instalando junto um package da Rocketseat
+- que tras um pre-set de configuracaoes da propria rockeseat
+- install ESLint
+
+**$ npm i eslint @rocketseat/eslint-config -D**
+
+- apos a instalacao vamos criar um arquivo na raiz do projecto
+
+ + .eslintrc.json
+
+$ 
+{
+  "extends": [
+    "@rocketseat/eslint-config/node"
+    // "@rocketseat/eslint-config/react"
+  ]
+}
+
+- lembrando que para o eslint funcionar precisar estar instalado no vscode a extencao eslint
+- Provavelmente ja estaja funcionando o eslint, mas caso nao estaja, basta saguir os passos abaixo.
+- para toda vez que salvar ele corrigir os erros
+
+- vamos em mais configuracoes
+- crtl + shift + p
+- >settings
+- abrir 
+- Preferences: Open User Setting (JSON)
+$
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": true
+    },
+
+- criando Script
+- Mostra todos os erros dos codigos e os que forem pequenos e faceis de serem corrigidos o eslint ja ira corrigir 
+- E tova vez que for subir um codigo, ele ira corrigir tudo
+
+- package.json
+$
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "lint": "eslint src --ext .ts --fix"
+  },
+
+- para executar
+**$ npm run lint**
+
+
+### Estratégias de acesso ao Banco de Dados
+
+- No mundo da programação é muito comum haver diversas formas para ter um mesmo resultado, então nessa aula você vai conhecer 3 formas de trabalhar com banco de dados e qual vamos utilizar nesse módulo.
+
+
+- Banco de Dados
+- o Banco de Dados que vamos utilizar eh o **sqlite**
+- **Sqlite** beneficios
+
+ + Banco sql, banco relacional 
+	- nao existe outra opcao melhor do que esse para aprendizado
+	- outros ex de banco relacional mysql postrest
+	- oferece tudo que voce precisa
+	- de forma perfomatica
+	- importante aprender banco relacional primeiro
+	- que estao em 90% dos casos de aplicacoes no mundo real
+	- inclusive as que utilizao node
+ + Nao precisa subir nenhum banco na maquina
+	- como Docker
+	- consegue utilizar ele sem instalar nada na nossa maquina
+	- pq todos os dados sao salvos em arquivos fisicos 
+	- em arquivos dentro do nosso projecto
+ + Eh muito parecido com mysql, postrest
+	- eh possivel migrar para outros bancos a nossa aplicacao
+ 
+### As 3 formar mais famosas de se comunicar com o Banco de Dados
+
+ 1. Drivers Nativos
+	- sao ferramentas, bibliotecas de baixo nivel que permitem agente se comunicar com o banco de uma maneira, bem nao abstrata, digamos assim
+ 2. Query builders - knexjs - knexjs.org
+	- sao formas de eu evitar ter que aprender muito SQL e poder focar na linguagem que eu to trabalhando 
+	- Eh um construtor de Querys
+	- O grande ponto de um Query Builder eh facilitar a escrita das querys, ou seja, dos codigos, dos sql que agente gera no banco com codigo JavaScript
+	- Ele mistura codigo JavaScript com codigo do Banco 
+	- a sintaxe do codigo eh aproveitada em qualquer Banco de Dados
+ 3. ORMS
+	- iremos usar em projetos no futuro
+	- podemos entender como se fossem niveis de abstracao 
+	- podemos usar muito mais a sua linguagem de programacao do que se preocupar com o sql em si
+	- a sintaxe do codigo eh aproveitada em qualquer Banco de Dados
+
+
+### Configurando o Knex
+
+$ https://knexjs.org/guide/#node-js
+
+- Vamos configurar o Knex na aplicação e realizar a primeira consulta ao banco.
+
+- alem da instalacao do Knex,
+- vamos instalar o driver do Banco de Dados que queremos utilizar
+- podemos ver que temos algumas opcoes
+- no nosso caso eh o sqlite3
+ 		
+- installation
+ $ npm install knex sqlite3
+
+- Start project
+- o arquivo que iremos fazer a conexao com o Banco de Dados
+
+ + src/database.ts
+
+$ 
+
+import { knex as setupKnex } from 'knex'
+
+export const knex = setupKnex({
+  client: 'sqlite',
+  connection: {
+    filename: './db/app.db',
+  },
+  useNullAsDefault: true,
+})
+
+ 
+ + db
+
+- quando executamos o codigo
+- npm run dev
+- ele cria na pasta db o arquivo app.db 
+- db/app.db
+- **app.db** eh o nosso Banco de Dados
+- os dados ficaram todos contidos dentro do app.db
+
+ + .gitignore
+ 
+$ 
+node_modules
+db/app.db
+
+
+### Criando primeira migration knex
+
+- Vamos aprender o que é uma migration, como ela pode ajudar em um desenvolvimento em times, além de criar e aplicar a primeira no código da aplicação.
+
+- para continuar desenvolvendo nossa aplicacao agora que ja temos acesso a nosso Banco de Dados
+- precisamos ter tabelas no Banco de Dados
+- Eh o primeiro passo
+- quais tabelas iremos ter 
+- quais campos essa tabela vai ter 
+- quais sao as chaves primarias 
+- relacionamentos
+
+- mas Antes de criar nossas tabelas
+- temos uma funcionalidade no Knex
+- que eh algo chamado de **Migration**
+
+- Migration eh basicamente um controle de versao dentro do nosso Banco de Dados 
+- Estamos acostumados a usar o git como controle de versao
+- Mas o git eh muito mais para trabalharmos na mesma base de codigo em varias pessoas, do que necessariamente controle de versao
+
+- trabalhar em time e ter o Banco de Dados atualizado entre todas as pessoas do time
+- eh por isso que usamos esse esquema de Migration 
+
+- **Migration** sao como um historico de todas as mudancas que foram feitas no nosso Banco de Dados e o mais importante eh que essas mudancas
+- o mais importanque que essas mudancas elas sao sempre anotadas digamos assim, com a data e o horario que elas foram criadas
+- conseguimos criar um historico certinho 
+- uma linha do tempo de como que nosso banco de dados mudou ao longo do tempo
+- o mais importante das migrations eh que agente tem com elas uma tabela criada automaticamente, chamada Migrations
+- onde o nosso Banco de Dados anota nessa tabela, quais Migrations, quais items desse historico de alteracoes no Banco de Dados, o nosso Banco de Dados ja teve, ja executou
+
+- Assim quando agente buscar algum codigo de algum outro desenvolvedor do nosso time e tiver uma Migration que o nosso Banco de Dados ainda nao conhece,
+- entao podemos executar um comando que o nosso Banco de Dados atualize com essas novas alteracoes
+
+- **Migration** para Banco de Dados tem um proposito muito semelhante ao que o Git faz dentro do nosso codigo
+- que eh agente conseguir trabalhar em time, onde varias pessoas podem modificar as mesmas tabelas, podem adicionar ou remover campos e mesmo assim agente conseguir ter essa facilidade em ter o Banco de Dados atualizado em todas as pontas
+
+- para Criar nossa primeira Migration vamos configurar algumas coisas na nossa aplicacao
+
+- o knex foi desenvolvido por padrao pra ser desenvolvido com JavaScript e nao com o TypeScript
+- na pasta node_modules dentro de bin, temos um cli do knex um binario do knex para conseguir criar e executar algumas coisas
+
+- ver comandos do **knex**
+ $ npx knex -h
+ 
+- Para criar nossa primeira Migration
+- Criando nossa primeira tabela no Banco de Dados
+
+ **$ npx knex migrate:make create-document**
+
+- Geralmente o nome da Migration ele precisa simbolizar, qual alteracao eu quero fazer no banco de dados
+- se eu quero criar uma tabela document agente vai criar uma migrate documents
+
+- nao pode ter espaco e nem acentos pq vai ser um arquivo fisico aqui na nossa aplicacao
+
+
+- para que o knex consiga conhecer as configuracoes do Banco de Dados, existe uma convensao de criarmos um arquivo na raiz do projeto, chamado knexfile.ts
+
+ + knexfile.ts
+ 
+- vamos importar as nossas configuracoes do Banco
+- so que o ponto eh, que o database.ts dentro do stupKnex({})
+
+- database.ts
+
+export knex = setupKnex({
+	client: 'sqlite',
+	connection: {
+		filenmae: './db/app.db',
+	},
+	useNullAsDeafault: true,
+})
+
+- eu quero so as configuracoes do Banco
+- entao o que eu preciso eh separar essa variavel como config = {}
+
+- database.ts
+
+$
+
+import { knex as setuKnex } from 'knex'
+
+export const config = {
+	client: 'sqlite',
+	connection: {	
+		filename: './db/app.db'
+	},
+	useNullAsDefault: true,
+}
+
+export cons knex = setupKnex(config)
+
+- eu vou importar de dentro do nosso data base as configuracoes e eu vou exportar essas configuracoes daqui de dentro
+- agora no knexfile.ts
+
+
+- knexfile.ts
+
+$
+import { config } from './src/database'
+
+export default config
+
+
+### Criando script
+
+- package.json
+
+$
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "knex": "node --no-warnings --loader tsx ./node_modules/.bin/knex",
+    "lint": "eslint src --ext .ts --fix"
+  },
+
+- para executar agora o knex
+- basta executar o codigo no terminal
+
+- vendo as opcoes de help do knex para test
+
+ $ npm run knex -- -h
+ 
+- agora vamos criar nossa migrate
+
+ **$ npm run knex -- migrate:make create-transactions**
+
+- ele criou uma pasta chamada migrations
+- e dentro dessa pasta tem um arquivo ts vazio
+- para escrevermos a parte da criacao da tabela
+
+- no database.ts
+
+- database.ts
+
+$ 
+import { knex as setupKnex, Knex } from 'knex'
+
+export const config: Knex.Config = {
+  client: 'sqlite',
+  connection: {
+    filename: './db/app.db',
+  },
+  useNullAsDefault: true,
+  migrations: {
+    extension: 'ts',
+    directory: './db/migrations',
+  },
+}
+
+export const knex = setupKnex(config)
+
+
+- vamos deletar a pasta migration que agora ficara dentro da pasta db
+
+- estartamos o codigo do Knex novamente
+
+ **$ npm run knex -- migrate:make create-transactions**
+ 
+- cria o arquivo migrate dentro da pasta db
+
+- agora podemos criar nossas tabelas do Banco e por ai vai
+- vamos entender um pouco mais a fundo como as migrations funcionam 
+
+
+### Criando tabela de transações
+
+- Seguindo o fluxo da aula anterior, vamos implementar os métodos up e down da migration que irá criar a tabela transactions
+
+- uma das vantagens de estamos usando o knex na nossa aplicacao eh que mais pra frente poderemos trocar do sqlite para postrest, mysql, oracle, seja qual for o Banco de Dados que vamos utilizar 
+- sem precisar alterar o codigo da nossa aplicacao 
+
+- para isso na parte onde vamos criar as nossas tabelas no Banco, agente tbm vai utilizar uma sintaxe especifica do knex, aqui para fazer a criacao das nossas tabelas
+
+- vejamos que todo arquivo de migration ele tem exatamente a data que foi criado, ano, mes, dia, hora, minuto, segundo e o nome do arquivo que agente informou
+
+- 20230424111749_create-transactions.ts
+
+- dentro dele tem sempre dois metodos, up e down
+
+import { Knex } from 'knex'
+
+export async function up(knex: Knex): Promise<void> {}
+
+export async function down(knex: Knex): Promise<void> {}
+
+
+ + **up** diz o que a tabela vai fazer dentro do Banco de Dados
+	- vai criar uma tabela
+	- vai adicionar um campo em uma tabela existente
+	- vai remover uma tabela
+
+
+ + **down** eh o metodo que descreve a seguinte situacao "deu merda"
+ 	- se precisarmos voltar atras, o metodo down deve fazer o metodo contrario ao que o up fez, se no up eu crio a tabela 
+ 	- no down eu removo a tabela
+	- remove campo na tabela
+
+
+- chaves primarias tem que ser um valor mais aleatorio e mais dificil de ser descoberto 
+
+- /db/migrations/20230424111749_create-transactions.ts
+
+$
+import { Knex } from 'knex'
+
+export async function up(knex: Knex): Promise<void> {
+  await knex.schema.createTable('transactions', (table) => {
+    table.uuid('id').primary()
+    table.text('title').notNullable()
+  })
+}
+
+export async function down(knex: Knex): Promise<void> {
+  await knex.schema.dropTable('transactions')
+}
+
+
+- executando o knex 
+
+ **$ npm run knex -- migrate:latest**
+
+- ele vai automaticamente ler todas as migrations e executar
+
+- validando 
+
+ **$ npm run dev**
+
+return 
+ server running !
+
+- excutamos agora nossa rota hello
+- terminal ou no browser
+
+ $ http localhost:3333/hello
+
+
+- knex migration criou uma tabela que anota, quais migrations ja foram executadas no banco de dados
+- a knex migration lock que foi utilizada aqui pelo knex 
+- essas duas tabelas sao resposaveis por anotar no banco de dados, quais migrations ja foram executadas
+
+- apartir do momemnto que uma migraction foi enviada para producao ou para nosso time ela nunca mais pode ser editada,
+- nao podemos editar uma migration
+
+ + caso voce tenha cometido algum erra voce se pergunta
+	- essa migration ja foi pro restante do seu time, entao esquece
+	- voce tera que criar uma nova migration para modificar o nome do campo
+	- pq apartir do momento, que outra pessoa do seu time executou aquela migration, se voce editar a migration de alguma forma, a pessoa que ja executou aquilo, nunca vai conseguir receber essa edicao.
+	- pq no banco de dados daquela pessoa, ja vai estar, dizendo que ela ja executou aquela migration, mesmo que voce edite, nao vai ser executada dinovo na maquina da pessoa 
+	
+ + Caso nao tenha enviado sua migration ainda
+	- para outras pessoas do time ou para producao
+	- ai pode ser editado, mas para isso voce precisa fazer o seguinte
+	- vai para o servidor
+	- e vai executar o codigo
+	
+ **$ npm run knex -- migrate:rollback**
+
+- ele vai entao desfazer a migraction que voce executou 
+
+
+- editando o knex
+
+- /db/migrations/20230424111749_create-transactions.ts
+
+$
+import { Knex } from 'knex'
+
+export async function up(knex: Knex): Promise<void> {
+  await knex.schema.createTable('transactions', (table) => {
+    table.uuid('id').primary()
+    table.text('title').notNullable()
+    table.decimal('amount', 10, 2).notNullable()
+    table.timestamp('created_at').defaultTo(knex.fn.now()).notNullable()
+  })
+}
+
+export async function down(knex: Knex): Promise<void> {
+  await knex.schema.dropTable('transactions')
+}
+
+
+- exccutando novamente o knex
+
+ **$ npm run knex -- migrate:latest**
+
+- pronto nossa tabela ja esta atualizada com os novos campos 
+- podemos fazer um test inserindo, trabalhando com a tabela
+
+- temos migrations que so alterao campos
+- vamos criar uma nova migration 
+
+- no terminal
+
+ **$ npm run knex -- migrate:make add-session-id-to-transactions**
+
+- estamos adicionando um campo chamado session id na tabela de transctions, dentro dessa migration agora
+
+
+- /db/migrations/20230424115822_add-session-id-to-transactions.ts
+
+$
+import { Knex } from 'knex'
+
+export async function up(knex: Knex): Promise<void> {
+  await knex.schema.alterTable('transactions', (table) => {
+    table.uuid('session_id').after('id').index()
+  })
+}
+
+export async function down(knex: Knex): Promise<void> {
+  await knex.schema.alterTable('transactions', (table) => {
+    table.dropColumn('session_id')
+  })
+}
+
+### Realizando queries com Knex
+
+- Vamos entender um pouco como fazer querys simples de inserção e busca de dados.
+
+- vamos fazer algumas operacoes que sao comuns de serem feitas em Banco de Dados
+
+### Variáveis ambiente
+
+- Sabe quando você precisa utilizar um diferente valor quando está em desenvolvimento e quando está em produção? Bom, é exatamente para isso que servem as variáveis ambiente e nessa aula vamos aprender a como configurar o uso delas, no Node.js.
+
+ + Ambientes
+	- producao
+	- desenvolvimento
+	- teste
+	- staging
+
+- o proprio banco de dados eh um deles, pois estamos usando um banco de dados em desenvolvimento e quando estiver em producao ele pode ser outro 
+
+- criar um arquivo .env na raiz do projeto
+
+ + .env
+ 
+- dentro do .env vao ficar nossas variaveis ambientes
+- para que agente consigo trabalhar com ele no vscode eh importante
+- instalar a extensao chamada DotENV
+
+- para entender a sintaxe do nosso aquivo .env
+
+- todas as configuracoes dentro de .env
+- sao variaveis e valor
+
+- .env
+
+$ 
+	DATABASE_URL="./db/app.db"
+	
+- para ler o arquivo .env dentro do node iremos instalar um biblioteca
+- install 
+
+ $ npm i dotenv
+
+- outro ponto importante das variaveis ambiente eh que agente coloca dados sensiveis
+- geralmente chaves de API, q vamos entegrar com servicos terceiros
+- novamente o .env precisa ir dentro do .gitignore
+
+- como o .env nao vai entrar no controle de versao 
+- quando um outro desenvolvedor for pegar seu codigo 
+- e precisa informar as variaveis ambiente no .env dela
+- a pessoa nao vai saber quais variaveis ela precisa informar
+- entao geralmente nas aplicacoes 
+- agente cria um arquivo na raiz do projecto
+- chamado .env.example
+
+ + .env.example
+
+- quais sao as variaveis que agente tem no nosso sistema
+- mais nao colocamos valores, principalmente naquelas que tem dados sensiveis
+- deixamos valores somente para aquelas variaveis ambiente que nao tem informacoes sensiveis
+
+- agora chaves de API
+- geralmente agente coloca so o nome e nao coloca valor
+- ex
+
+- .env.example
+$
+ API_KEY=
+
+- ai entao a pessoa vem ai no espaco e preenche caso ela precise utilizar aquela variavel ambiente 
+- o .env.example pode subir no git
+
+
+### Tratando .env com Zod
+
+- Ao executar um projeto, como você pode garantir que as variáveis ambiente estão preenchidas e com os valores corretos?
+
+Com o uso do Zod, isso é totalmente possível.
+
+Nessa aula você vai aprender sobre essa ferramenta e como configurar para validar e tratas as variáveis ambiente do projeto.
+
+
+- eh ruim cada vez que eu precisar de uma variavel ambiente na nossa aplicacao e essa variavel for obrigatoria, eu ter que ficar criando esses if() no meio do codigo
+- ate pq tem varias variaveis ambiente que agente vai criar no futuro, que nao faz sentido a nossa aplicacao executar, sem acesso a essas variaveis
+- sem essas variaveis terem sido informadas pelo usuario, pelo ambiente que ta executando nossa aplicacao
+- uma delas eh o URL de conexao com o Banco de Dados
+
+- ficar criando os if() eh um pouco chato 
+
+ + a melhor forma eh usar uma biblioteca especifica para validacao de dados 
+	- que elas validam os formatos dos dados
+	- se esse dados pode ser nulo ou nao 
+	- se eh uma string ou se eh um numero
+	- alem de validar a presenca dos dados
+	- tem que validar os valores
+	- formato correto
+	- sao todos os cuidados para validar variaveis ambiente 
+	- pq nossa aplicacao nao pode executar, com variaveis ambiente informadas da maneira incorreta
+
+- vamos criar uma pasta env dentro da pasta src com o arquivo index.ts
+
+ + src/env/index.ts
+
+#### instalando a biblioteca Zod
+- install
+
+$ npm i zod
+
+- eh a biblioteca que vamos usar para validacao de dados
+- a biblioteca zod pode ser usada para validacao de qualquer tipo de dado dentro da nossa aplicacao 
+- inclusive as Variaveis Ambiente aqui nesse caso
+- mas mais pra frente usaremos para validacao de dados por exemplo
+- na hora de criar um usuario ou criar uma transacao no nosso caso eu nao quero que algum campo venha do front-end com algum valor errado e por ai vai 
+- agente vai utilizar o zod ai para unir essa biblioteca na parte de variaveis ambiente tbm
+
+ - enSchema = eh o formato dos dados
+ - qual o formato que eu vou receber de dados 
+ - das nossas variaveis ambiente
+ - para todas as variaveis ambiente criamos apenas um **schema**
+ 
+- /src/env/index.ts
+
+$
+import 'dotenv/config'
+import { z } from 'zod'
+
+const envSchema = z.object({
+  DATABASE_URL: z.string(),
+})
+
+const env = envSchema.parse(process.env)
+
+
+- zod possui otima integracao com TypeScript
+- fizemos as tratativas das nossas Variaveis Ambiente
+
+
+
+
+### Requisitos da aplicação
+
+- toda aplicacao que eu vou pensar em back-end
+- **em geral 3 coisas**
+
+- Esta aula vai abordar dois aspectos importantes do desenvolvimento de software: requisitos funcionais e regras de negócio.
+
+Os requisitos funcionais são as características do sistema que devem ser atendidas para atingir seus objetivos.
+
+As regras de negócio são os critérios que o sistema deve seguir para suportar a tomada de decisões e garantir a conformidade.
+
+
+ + **Requisitos Funcionais(RF)**
+	- O usuário deve poder criar uma conta;
+	- O usuário deve poder obter um extrato da sua conta;
+	- O usuario deve poder obeter um resumo da sua conta;
+	- O usuário deve poder listar todas transações que já ocorreram;
+	- O usuário deve poder visualizar uma transação única;
+	- O usuario deve poder criar uma nova transcao;
+
+
+ + **Regras de Negócios(RN)**
+	- A transação pode do tipo crédito que somará ao valor total, ou débito que será subtraído;
+	- Deve ser possível identificar o usuário entre as requisições;
+	- O usuário só pode visualizar transações que ele criou;
+ 
+ + **Regras Não Funcionais(RNF)**
+	- Será criado ao longo da aplicação;
+	- parte tech
+
+
+- criamos tudo como um README.md
+- como se fosse uma lista de to do 
+- para que ao longo que vamos desenvolvendo a aplicacao 
+- vou marcando um check, nas coisas que eu ja terminei 
+- principalmente quando tem mais pessoas trabalhando no projecto 
+- para poder iniciar uma gestao de tarefas
+
++ README.md
+
+
+### Plugins do Fastify
+
+
+- Esta aula vai abordar os plugins do Fastify, que são funções adicionais que fornecem recursos ao framework.
+
+Os plugins podem ser usados para adicionar funcionalidades como autenticação, log, validação de dados, gerenciamento de erros, entre outras. A aula vai te ensinar a criar e utilizar um plugin de rotas.
+
+- sao uma forma de separar pedacos da nossa aplicacao em mais arquivos
+- se eu quero por exemplo
+- definir as rotas da minha aplicacao 
+- em outro arquivo
+
+ + src/routes/transactions.ts
+ 
+- agora quero que essa rota hello
+- queremos acoplar penos funcionamentos a nossa aplicacao principal que eh o app
+
+- entao dentro do fastify, temos essa funcionalidade puglins
+
+ 
+- src/routes/transactions.ts
+
+$
+import { FastifyInstance } from 'fastify'
+import { knex } from '../database'
+
+export async function transactionsRoutes(app: FastifyInstance) {
+  app.get('/hello', async () => {
+    const transactions = await knex('transactions')
+      .where('amount', 1000)
+      .select('*')
+
+    return transactions
+  })
+}
+
+
+- Agente so separou as routas em outro arquivo 
+- e isso se chama Plugins
+- pq o nome plugins
+- ele vem nao so dagente separar rotas
+- mas de separar muito mais outras coisas dentro da aplicacao
+
+- podemos registrar quantos plugins quisermos 
+- unico ponto importante eh a ordem
+- a ordem que agente defini os plugins 
+- sera a ordem que o Fastify vai executar
+
+
+
+### Criação de transações
+
+- Nessa aula, além de estruturar as rotas de transações, vamos aprender a validar os dados da requisição (request.body) com o Zod para garantir que as informações recebidas sejam válidas e após isso, fazer de fato a inserção no banco de dados.
+
+- agora que temos um arquivo dedicado para rotas de transcations dentro da nossa API
+
+- Vamos comecar criando nossa primeira rota que nao vai ser hello 
+- que eh uma rota do tipo POST
+- para criacao de uma nova transaction
+- aqui uma das coisas legais eh que todas as rotas 
+- dentro desse plugin aqui 
+- ele vao sempre utilizar o prefixo transact
+
+- src/routes/transctions.ts
+
+$ 
+import { FastifyInstance } from 'fastify'
+import { knex } from '../database'
+
+export async function transactionsRoutes(app: FastifyInstance) {
+  app.post('/', async () => {
+    const transactions = await knex('transactions')
+      .where('amount', 1000)
+      .select('*')
+
+    return transactions
+  })
+}
+
+
+- Vamos usar o Zod 
+- para validar nosso body da nossa requisicao
+- utilizando o zod agente vai ter automaticamente
+- como vimos na nossas variaveis ambiente 
+- a parte de geracao dos tipos da inteligencia da nossa IDE
+
+- existem os HTTP codes ()
+- sao codigos que simbolizao o tipo de retorno que eu estou tempo da minha API 
+- se deu sucess ou se nao deu
+- qual foi o tipo de sucesss
+
+- quando eu crio o recurso dentro da nossa API
+- O metodo que agente utiliza geralmente eh o codigo HTTP 201
+- simboliza recurso criado com sucess
+
+- http 2014
+
+### utilizando Insonia para fazer as requisicoes
+
+- Abrindo Insominia
+- project Insominia
+ + Create 
+ + Request Collection
+- Create New Request Collection
+- Rename
+ + Ignite Node.js API REST
+ + Create
+ + +
+ + New Folder
+- Rename
+ + Transacions
+ + new request
+ + tipo: POST
+- na barra de send
+- http://localhost:3333/transactions
+- Rename a New Request
+- para
+- Create transaction
+
+- no Body
+- trocar para JSON
+- Dentro do JSON vamos enviar os dados da transaction
+
+$ 
+{
+	"title": "Freelancer",
+	"amount": 8000,
+	"type": "credit"
+}
+
+- click in send
+ + send
+
+- return code 201 created sucess
+
+### Tipagem no Knex
+
+- Esta aula ensinará como integrar o Knex com o TypeScript para ter suporte ao autocomplete de tabelas. Isso significa que, ao digitar o nome de uma tabela, o TypeScript será capaz de sugerir automaticamente as colunas existentes e as tipagens de dados corretas.
+
+- o knex ele nao consegue identificar quais campo e quais tabelas existem dentro do nosso Banco de Dados de forma automatica
+
+- Vamos dizer de forma manual quais campos e quais tabelas estao disponiveis para ele
+
+
+- criar uma pasta dentro de src chamada @types
+- essa pasta vai servir para sobre-escrever tipagens
+- ou seja, informacoes de tipos
+- que sao basicamente o que adiconam pra gente essa inteligencia
+- de outras bibliotecas
+
++ src/@types/knex.d.ts
+
+- d = definicao de tipos
+- eh um arquivo que nao vai ter codigo JavaScript dentro dele 
+- somente codigo TypeScript 
+
+- src/@types/knex.d.ts 
+
+$
+// eslint-disable-next-line
+import { Knex } from 'knex'
+
+declare module 'knex/types/tables' {
+  export interface Tables {
+    transactions: {
+      id: string
+      title: string
+      amount: number
+      created_at: string
+      session_id?: string
+    }
+  }
+}
+
+
+- hacker legal para ter uma integracao melhor do Knex com o TypeScript
+
+
+### Listagem das transações
+
+- Nessa aula seguiremos implementando as rotas para listar todas as transações e também outra que deve receber o id para trazer uma única transação.
+
+- vamos criar uma rota de listagem de todas as transacoes
+- src/routes/transaction.ts
+
+- vamos no Insominia
+- duplica requisicao
+- named
+ + List transactions 
+ + GET
+ + no Body
+- http://localhost:3333/transactions
+ + send
+ 
+- vamos aproveitar e criar nossa rota que detalhe
+- que busca detalhes de uma transacao unica
+
+
+### insominia
+- criar uma new request com duplicate
+- rename
+ + Get transaction
+- utilizamos o id de uma transacao valida
+- http://localhost:3333/transactions/d50510ac-5139-48f3-95b8-0b990da283b4
+ + send
+
+ 
+
+### Resumo de transações
+
+- Finalizando a criação de rotas, vamos implementar a rota para calcular (somar) as transações e retornar o total.
+
+- Rota para retornar o resumo
+- src/routes/transactions.ts
+
+- **Insominia** 
+- Duplicate new request
+- renamed
+ + Get summary
+- troca a rota
+- http://localhost:3333/transactions/summary
+
+
+### Utilizando cookies no Fastify
+
+- Nessa aula vamos identificar o usuário que está utilizando a aplicação ao ler e escrever informações em Cookies utilizando o Fastify.
+
+- quando 2 usuarios estiverem utilizando nossa aplicacao
+- que todas as transacoes criadas por esses dois usuarios, fiquem especifica para cada um dos dois usuarios
+
+- tudo comeca com a criacao de uma transacao
+- quando o usuario cria a primeira transacao dele
+- eu quero ter alguma forma de anotar na maquina desse user
+- um id, o qual esse id o usuario vai utilizar em todas as transacoes subsequentes
+- em todas as requisicoes que ele fizer dali pra frente
+- para identificar que este usuario eh o mesmo que criou essa transacao la no comeco
+
+- eu trouxe esse ensinamento pq eu acho um dos mais funcamentais da programacao web do http em geral 
+
+- Os Cookies
+
+- sao basicamente formas da gente manter contexto entre requisicoes
+- sao muito utilizados por redes sociais
+- voce nao precisa estar logado nessa rede social
+- para que essa rede social saiba quem eh voce no contexto entre todas as requisicoes que voce faz
+- ou seja, no momento que voce acessa esse site
+- ele muitas vezes caso ele queira te monitorar
+- ele salva alguma informacao, como um id dentro do seu navegador
+- de uma forma com que voce nao perceba
+- esse id mesmo que voce nao esteja logado 
+- eh uma forma da aplicacao, conseguir validar que a mesma pessoa
+- baseado no id que esta salvo ali nos cookies
+- fez tais requisicoes
+- fez tais processos dentro da aplicacao
+
+- uma vez que voce loga na aplicacao todo esse historico de coisas que voce ja havia feito antes de logar, sao salvos na sua conta
+- voce pode muitas vezes nao estar autenticado numa aplicacao
+- mas ela esta coletando tudo que voce esta fazendo
+
+- vamos utilizar a estrategia de cookies aqui mais pra o bem digamos assim
+
+- para agente conseguir saber que o mesmo usuario que esta cadastrando transacoes eh o usuario que esta listando as transacoes
+
+- por isso que no comeco da nossa aplicacao
+- agente adicionou na tabela transactions 
+- um campo chamado **session_id**
+
+- eh claro que agente so esta utilizando essa estrategia session_id
+- pq agente ainda nao tem um sistema de autenticacao 
+- nao tem email, senha, tabela de usuario, nem nada disso
+
+- mas como nao precisamos que a pessoa faca login na aplicacao
+- para agente ja comecar de alguma forma a notar quem eh essa pessoa
+- e o que q ela esta fazendo na sua aplicacao
+- pra quando um dia ela fizer um login 
+- ja saber quem era essa pessoa 
+- e ver tudo que ela ja fez 
+
+- dai a unica coisa que vai faltar eh colocar o id do usuario dela, nessas acoes que ela ja fez 
+- ou seja, identificar as acoes 
+
+- saber quais acoes foram feitas voce ja sabe
+
+- com o session_id
+- qual o fluxo que eu esperando na minha aplicacao 
+
+- apartir do momento que o usuario criar a primeira transacao 
+- que eh onde comeca tudo, digamos assim
+- agente vai anotar para ele um session_id nos cookies do navegador
+- quando este usuario for listar alguma transacao
+- agente sempre vai validar
+- apenas transacoes daquele mesmo session_id
+
+
+### para trabalhar com cookies install package
+- instalar package 
+ $ npm i @fastify/cookie 
+
+- pq ele facilita agente trabalhar com cookies aqui dentro
+- ja trans a integracao com TypeScript
+- a inteligencia ali por tras que eh importante
+
+- src/server.ts
+
+- antes das nossas rotas
+- veja eh importante a ordem
+- pq se eu quero trabalhar com cookies dentro das minhas rotas de transacion, o cadastro do modo de cookies precisa acontecer antes
+
+
+- **Insominia**
+- Create transaction
+- http://localhost:3333/transactions
+- send
+
+- na aba cookies ele retornou para mim 
+- sessionId
+- e o valor da sessao que foi criado
+
+- agora quando eu for fazer as minhas requisicoes
+- dentro dos cookies que sao enviados 
+- aquele meu cookie vai automaticamente
+
+- como que faco para validar isso
+
+- **Insominia**
+- click em Cookies
+- veja que dentro domunio local host 
+- um cookie sessionId=
+- foi criado com um valor 
+- o maxAge que eh o tempo que el vai durar
+- o Path="/"
+- o Domain=localhost
+
+- os cookies sao automaticamente enviados 
+- nao preciso digitar a informacao dos cookies em qualquer lugar
+- os cookies sao como parametros, porem 
+- que sao criados pela nossa propria aplicacao
+- e sao enviados automaticamente
+- em todas as requisicoes
+- sao otimos pra gente identificar usuarios
+- ou anotar informacoes que agente precisa saber entre requisicoes
+- informacoes de contexto
+
+
+
+### Validando existência do cookie
+
+- Nesta aula, validaremos o cookie sessionId para identificar o usuário da aplicação.
+
+A busca e validação serão realizadas usando uma função como **preHandler (middleware)**
+forma de compartilhar regras de negocio entre varias rotas e reaproveitar isso
+
+- nas rotas de listagem tanto as que listam todas as trasacoes ou uma unica transacao, ou resumo
+- eu preciso buscar somente as transacoes daquela sessao 
+- ou seja, daquele usuario
+- daquele session_Id que criei nos cookies que edentifica o usuario
+
+- vamos comecar pelas rotas que listam todas as transacoes 
+- eu posso fazer algo como o seguinte 
+
+- src/routes/transacions.ts
+
+### Middleware Fastify valindando cookie
+- validar o cookie
+- o fastify chama isso de prerendeler 
+- e nos vamos chamar de middlware = interceptadores
+
+
+### interceptador
+ + /src/middleware/check-session-id-exists.ts
+
+
+- eu consigo criar interceptadores/middleware nas nossas rotas
+- em cada uma dessas rotas e reaproveita-los 
+- Os interceptadores/middleware como o proprio nome ja diz
+- vao executar antes de cada uma dessas rotas 
+- das 3 rotas
+
+- eles vao receber os mesmos parametros
+
+- e eles podem fazer verificacoes la dentro
+- ele intercepta so quando necessario
+
+- insominia 
+- criar uma transacao 8000 credito
+- criar uma de 4000 debito
+- send
+- list transactions
+- send
+- get transction para buscar uma unica transacao
+- send com id
+- get summary resumo
+- send
+
+### Configurando um hook global
+
+- Nessa aula vamos aprender a como registrar hooks no Fastify e em quais rotas eles vão impactar.
+
+- Quando agente cria um plugin do Fastify
+- cada vez que agente separa parte da nossa aplicacao 
+- agente cria um plugin 
+- agente criou um parte separada da nossa aplicacao l
+
+- essa parte separada possui um contexto especifico
+- tudo que eu registrar aqui dentro
+- mesmo que seja global
+- vai valer apenas para as rotas dentro desse contexto 
+- dentro desse plugin 
+
+- ou seja, se eu criar um outro arquivo de rotas para lidar com outra entidade da nossa aplicacao
+- tudo que estiver gravado globalmente dentro desse plugin nao vai interferir em outro plugin 
+
+- para criar um handler global
+- que vai executar independete da rota que o user estar acessando 
+
+- app.addHook('preHandler')
+
+$
+  app.addHook('preHandler', async (request, reply) => {
+    
+  })
+
+### Entendo testes automatizados
+
+- Nesta aula, vamos explorar o mundo dos testes automatizados.
+
+Vamos aprender sobre a importância de realizar 
+ + testes automatizados na sua aplicação, incluindo os conceitos de 
+ + testes unitários, 
+ + testes de integração e 
+ + testes e2e, assim como a importância da 
+ + pirâmide de testes para se ter uma estratégia de testes sólida e eficiente.
+
+Uma breve explicação:
+
+**Testes unitários** são testes que validam o comportamento de uma única unidade de código, como uma função ou método. Eles são úteis para garantir que cada parte da aplicação esteja funcionando corretamente, sem depender de outras partes.
+
+**Testes de integração** são testes que validam a integração entre várias partes da aplicação, como a integração entre a camada de banco de dados e a camada de serviço. Eles são importantes para garantir que a aplicação esteja funcionando corretamente como um todo.
+
+**Testes e2e (end-to-end)** são testes que validam o comportamento da aplicação como um todo, simulando a interação do usuário com a aplicação. Eles são importantes para garantir que a aplicação esteja funcionando corretamente em todos os níveis, desde a camada de interface até a camada de banco de dados.
+
+**A pirâmide de testes** é uma estratégia que se baseia em ter mais testes unitários e menos testes de integração e e2e, pois testes unitários são mais rápidos e fáceis de escrever e manter do que outros tipos de testes.
+
+
+- Uma das coisas mais importantes dentro de uma aplicacao 
+- desde o comeco, principalmente em aplicacoes back-end
+- se seu proposito eh se especializar em back-end 
+- vai ser super importante essas proximas aulas
+- vamos falar de testes automatizados
+
+- uma das coisas que sao primordiais de se aprender desde o inicio na programacao 
+- pq quando antes voce aprende, antes vira a chave na sua cabeca 
+- do quanto isso eh importante para sua aplicacao 
+
+- teste automatizados, sao formas da gente manter a confianca na hora de dar a manutencao no codigo a longo prazo
+
+- testes automatizados, nao tem nada haver com simplismente garantir que nossa aplicacao esta funcionando 
+- blz, esse eh o proposito final
+- mas o proposito anterior a esse eh que testes automatizados dao pra gente confianca para trabalhar no codigo inclusive quando nossa base de codigo estiver muito mais complexa do qque ela esta hoje
+
+- sem ter aquela disconfianca de que alguma coisa pode quebrar
+
+- alguma coisa que voce nem imagina que pode quebrar, vai quebrar
+- alguns erros so aparecem com testes automatizados
+
+- voce mecher em uma parte do codigo e outra parte muito distante que voce nem imaginava que poderia quebrar por causa dessa alteracao que voce fez, quebrou
+
+- testes automatizados garantem examente isso que voce, possa mecher nessa pequena parte do codigo 
+- executar os testes automatizados que por muitas vezes, eles tentam simular acoes que o usuario faria na sua aplicacao
+
+- vamos fazer um pouco de tipos de testes
+- piramedes de testes 
+- quais testes agente vai utilizar nesse primeiro momento
+
+- mas eles vao acegurar que todas as funcionalidades da sua aplicacao, pelo menos as mais importantes ou as mais cruciais estao funcionando perfeitamente 
+
+- existem varios tipos de testes 
+- **os 3 tipos de testes mais famosos**
+
+ + Unitarios 
+ 
+	- testa unidade da sua aplicacao
+	- uma pequena parte de forma isolada
+	- testa aquela funcao sozinha sem contexto
+	- geralmente eh o tipo de teste que mais temos na nossa aplicacao
+ 
+ + Integracao 
+ 
+ 	- Quando voce testa a comunicacao entre duas ou mais unidades
+ 
+ + e2e - ponta a ponta
+ 
+	- Sao testes que basicamente simulam um usuario operando na nossa aplicacao
+	- vao simular todas as acoes que um usuario poderia fazer na nossa aplicacao
+	- vao verificar se as portas de entrada da nossa aplicacao back-end estao funcionando de ponta a ponta
+	- de ponta-a-ponta significa desde a Rota ate o Banco de Dados
+	- vai testar tudo exatamente como se nossa aplicacao estivesse sendo operada em producao por um usuario
+	- vai testar tudo
+	
+	
+- Quais testes vamos escrever nessa aplicacao
+- cada teste possui um dificuldade e algumas exigencias
+- que precisamos seguir na nossa aplicacao
+- para que o teste seja possivel ser feito
+
+ + piramede de testes
+ 
+	- **primeiro para aprender E2E**
+		- pq ele nao depende de nenhuma tecnologia 
+		- nao depende de arquitetura de sofware
+		- nao depende de nada
+		- qualquer pessoa pode escrever teste E2E
+		- indiferente da aplicacao 
+		- indiferente da tecnologia que usando
+		- sao testes com barreira de entrada muito pequena 	
+	
+	- Desvantagem E2E 		
+ 		- sao testes extremamente lentos
+
+ 
+- nessa aplicacao iremos escrever exclusivamente testes E2E
+
+- ideia geral eh que 
+	- poucos testes E2E
+	- mais testes de Integracao 
+	- muitos testes Unitarios
+
+- por isso que falamos da piramede de testes
+- pq na base dela estao os testes unitarios
+- os testes unitarios sempre vao estar em maior quantidade na nossa aplicacao
+- agente so nao vai criar eles agora
+- pq eles dependem da gente arquitetar a nossa aplicacao um pouco melhor 
+- para que os testes sejam mais faceis de serem feitos
+- e nao exijam tantas gabiarras para que sejam feitas
+
+
+### Criando primeiro teste
+
+- Esta aula ensina sobre como criar o primeiro arquivo de testes utilizando o vitest, uma ferramenta para escrita e execução de testes automatizados. A aula irá cobrir desde o motivo do uso dessa ferramenta até a instalação, escrita e execução do primeiro teste.
+
+- primeiro teste dentro da aplicacao
+
+- para criar testes dentro do ambiente JavaScript geralmente agente agente usa uma ferramenta terceira para escrever os testes
+- isso pq o node na versao lts
+- ele ate tem uma API propria de testes
+- mas ela esta muito recente totalmente experimental
+- nao faz sentido agente optar por utilizar essa API experimental do node ate pq ela pode mudar bastante 
+- e pq ela ainda nao vai trazer por enquanto pra ela conseguir trazer todas as funcionalidades que temos em um framework de testes 
+- especifica de testes criada para ambiente JavaScript
+
+- a sintaxe que vamos escrever teste eh a mesma pra quando agente for escrever testes para qualquer outra aplicacao JavaScript
+- seja Front-end com React
+- mobile com React-Native
+- Vue
+- angular
+- ou qualquer outra coisa assim
+- agente aproveita a sintaxe entre todos esses ambientes 
+
+ + ferramenta mais famosa hoje em dia eh
+	- jestjs.io
+	
+- ferramenta incrivel para testes
+- ela funciona com todo grande parte de projectos
+- TypeScript / Node / React / Angular / Vue e muito mais
+
+- mais nao iremos usar o jestjs
+- uma nova ferramenta foi lanca que eh o Vitest.dev
+- eh um frameWork de teste assim como o Jestjs
+- uma tecnologia que tras tudo que agente precisa dentro do ecosistema de testes
+
+- o mais importante do Vitest quando comparado com o Jestjs
+- e que por debaixo dos panos o Vitest usa uma ferramenta chamada 
+ + esbuild
+- que eh a mesma ferramente usada pelo tsx
+- eh a mesma ferramenta que esta por tras do Vitejs
+
+- o esbuild como o proprio nome ja dis
+- An extremely fast buindles for the web
+- quando agente faz o teste vai estar escrito em TypeScript
+- nossa app eh TypeScript
+- so que os testes escritos em TypeScript
+- eles tambem vao precisar de um processo 
+- de converter eles por debaixo dos panos para JavaScript
+- para que as ferramentas de testes possam entender os testes
+
+- pq o TypeScript nao eh entendido automaticamente pelo node
+- no Jestjs temos que intalar tudo isso a parte e geralmente fica muito mais lento pq temos que usar outras ferramentes e torna o processo lento
+
+- enquanto o Vitest faz tudo isso de forma automatica 
+- suporta TypeScrip
+- suporta EcmaScript module
+- suporta JSX - react / react-Native que permite escrever HTML dentro do JavaScript
+
+- mas o mais importante do Vitest eh que ele eh totalemten compativel com o Jestjs
+
+- se voce pegar algum projeto com testes escrito com Jestjs
+- voce vai saber escrever os testes pq nao muda nada 
+- o codigo eh igual
+- a unica diferenca eh o que esta se passando por tras 
+- onde o Vitest eh muito mais rapido que Jestjs
+
+- instalacao do Vitest eh muito mais facil tbm
+
+### install Vitest
+
+- install 
+$ npm i vitest -D
+
+ + test/example.spec.ts
+
+$
+import { test } from 'vitest'
+
+test('o usuario consegur criar uma nova transacao', () => {
+  const responseStatusCode = 201
+
+  expect(responseStatusCode).toEqual(201)
+})
+
+
+
+- teste eh composto por 3 variaveis importantes
+	+ Enunciado
+		- eh para q esse teste esta proposto a se fazer
+	+ Operacao
+		- fazer a chamada HTTP para criar uma nova transacao
+	+ Validacao
+		- validar operacao, todo teste tem que ter uma etada de validacao
+		- que sao quais verificacoes, quais validacoes, quais expect() eu vou fazer, ou seja o que eu espero que aconteca, que tenha dado de resposta
+		- para que esse meu teste seja valido
+		
+- para executar
+- code terminal
+
+$ npx vitest
+
+- ele ira identificar os testes e executa-lo
+
+### criando Script
+
+- package.json
+
+$ 
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "knex": "node --no-warnings --loader tsx ./node_modules/.bin/knex",
+    "lint": "eslint src --ext .ts --fix",
+    "test": "vitest"
+  },
+
+- to run code
+$ npm test
+
+
+### Testando criação de transação - Test Real
+
+- Esta aula ensina como criar o primeiro teste e2e para testar a rota de criação de transação, utilizando o pacote 
+
+	**supertest**
+
+Além disso, a aula explica o uso das funções 
+	+ beforeAll, 
+	+ beforeEach, 
+	+ afterAll e 
+	+ afterEach** 
+	para realizar configurações e limpezas antes e depois dos testes e2e.
+
+Uma breve explicação sobre esses métodos:
+
+**beforeAll**
+
+É uma função que é executada uma única vez antes de todos os testes. É útil para inicializar recursos compartilhados que serão utilizados pelos testes.
+
+**beforeEach**
+
+É uma função que é executada antes de cada teste. É útil para preparar o ambiente antes da execução de cada teste, por exemplo, inicializar variáveis ou limpar o banco de dados.
+
+**afterAll**
+
+É uma função que é executada uma única vez após todos os testes terem sido executados. É útil para limpar recursos compartilhados ou fechar conexões abertas.
+
+**afterEach**
+
+É uma função que é executada após cada teste. É útil para limpar o ambiente depois da execução de cada teste, por exemplo, limpar variáveis ou fechar conexões com o banco de dados.
+
+
+- Vamos fazer o primeiro Test Real
+- que realmente vai fazer uma chamada HTTP
+- vai criar uma nova transacao 
+- e vai validar se essa requisicao retornou um status code de sucess
+- no caso um 201
+
+- no nosso server se formor ver no final de tudo aqui 
+- usamos o metodo app.listen({})
+
+$
+app
+  .listen({
+    port: env.PORT,
+  })
+  .then(() => {
+    console.log('HTTP Server Running!')
+  })
+
+- isso quer dizer que se eu importar o meu app
+- que seria a porta de entrada pra eu fazer a requisicoes aqui pra minha aplicacao
+
+
+- para os testes nao eh legal subir um servidor na porta 3333
+- pq eu posso estar com minha aplicacao ja rodando na porta 3333
+- pode dar conflito, entao nao eh legal subir o servidor quando estamos executando os testes
+
+
+- existe uma ferramenta que eh bem conhecida no ecosistema de node que ela se chama 
+
+### install SuperTest
+
+ + SuperTest
+ 
+- vamos instalar essa biblioteca
+
+- install
+ $ npm i supertest -D
+
+- Com essa ferramenta SuperTest podemos fazer requisicoes para nossa aplicacao seja ela com Fastify, Express ou qualquer coisa assim,
+- Sem colocar a aplicacao no ar.
+- Sem usar o metodo listen 
+
+
+- vamos seprar o arquivo server.ts em 2 arquivos
+
+	+ src/app.ts
+	
+- em app.ts e server.ts
+
+- o app eu vou pegar todo o codigo que esta antes do app.listen()
+- e vou jogar tudo pro app.ts
+
+**- app.ts** 
+$
+import fastify from 'fastify'
+import cookie from '@fastify/cookie'
+
+import { transactionsRoutes } from './routes/transactions'
+
+export const app = fastify()
+
+app.register(cookie)
+
+app.addHook('preHandler', async (request, reply) => {
+  console.log(`[${request.method}] ${request.url}`)
+})
+
+app.register(transactionsRoutes, {
+  prefix: 'transactions',
+})
+
+
+**- server.ts**
+$
+import { app } from './app'
+import { env } from './env'
+
+app
+  .listen({
+    port: env.PORT,
+  })
+  .then(() => {
+    console.log('HTTP Server Running!')
+  })
+
+
+- rodamos o code
+$ npm run dev
+
+- rodando perfeitamente
+
+- agora nos Testes eu vou usar so o app.ts
+- e nao faco o app.listen({ port:3333 })
+
+- Quando eu importo o app no example.spec..ts
+- eu tenho acesso a minha aplicacao, sem precisar subir um servidor pra subir um servidor pra ela 
+
+- example.spec..ts
+- um pequeno conflito na import do supertest
+
+- existem algumas bibliotecas que nao foram construidas com TypeScript, ela foram construidas com JavaScript
+- e com isso o TypeScript ele reclama pq ele tenta buscar o codigo TypeScript da biblioteca para conseguir mais inteligencia para nossa IDE vscode
+
+- as maneiras de se identificar isso eh pelo 
+ + github, vendo se o codigo esta todo em JavaScript
+ + npm, que vai ficar o simbulo DT
+ 	- DT significa que a biblioteca, a parte TypeScript da biblioteca foi criada aparte em outro pacote que eh o @types/supertest e foi criado pela comunidade,
+ 	- genralmente esse @types/supertest / package nem eh mantido pela equipe da supertest
+	
+
+- existem outros pacotes, como por exemplo 
+- Fastify, que nesse caso ja sao construidas com TypeScript direto
+- identificamos isso entrando no npm e vendo o simbulo TS simbulo mais azul escuro
+
+### install SuperTest @types/supertest
+
+- install
+> $ npm i -D @types/supertest
+
+- A nossa rota de transactions de criar uma nova transacao
+- ela nem devolve resposta ela devolve vazio
+- entao nem faz sentido eu anotar o retorno da rota em nenhuma variavel 
+- eu vou direto chamar usando o request 
+- pro request eu vou passar o meu app.server
+
+- por de baixo dos panos ta sempre rodando um servidor
+- a forma como agente acessa esse servidor muda um pouco em cada framework, mas existe
+
+- o SuperTest sempre precisa receber esse servidor do node
+- e em baixo podemos chamar os metodos http
+
+
+- /test/example.spec.ts
+
+import { test, beforeAll, afterAll } from 'vitest'
+import request from 'supertest'
+import { app } from '../src/app'
+
+// beforeEach
+// afterAll
+beforeAll(async () => {
+  await app.ready()
+})
+
+afterAll(async () => {
+  await app.close()
+})
+
+test('User can create a new transaction', async () => {
+  await request(app.server)
+    .post('/transactions')
+    .send({
+      title: 'New transaction',
+      amount: 5000,
+      type: 'credit',
+    })
+    .expect(201)
+})
+
+
+### Categorizando os testes
+
+- Esta aula irá explicar sobre a organização de testes utilizando a função describe.
+
+A função describe permite agrupar testes relacionados em blocos para melhorar a legibilidade e manutenção dos códigos de testes. Além disso, é possível utilizar a função describe para criar estruturas de testes hierárquicas e repetir o setup em blocos de testes comuns.
+
+Também é explicado sobre o uso da função it para criar cada teste, descrevendo em inglês seguindo o padrão "it should be able".
+
+
+
+- Categorizar os nossos testes
+- ex
+- todos os testes que vao testar rota das transacoes, especificamente da nossa aplicacao 
+- geralmente eu coloco dentro do mesmo arquivo
+- trocar o nome do arquivo ja existente
+
+ + test/exampla.spec.ts
+ 	- to
+ + test/transactions.spec.ts
+
+- eu coloco todos os testes dentro de uma categoria, aqui no vitest
+- que existe tambme no jestjs
+
+- de dentro do Vitest eu posso importat o describe
+
+
+- it()
+
+- it faz parte da sentenca
+
+
+
+### Testando listagem de transações
+
+- Nessa aula é explicado como criar um teste e2e para listagem de transações.
+
+É ensinado como recuperar o cookie de uma resposta do supertest e utilizá-lo em outra requisição do supertest, além de validar o corpo da listagem usando as funções expect.toEqual e expect.objectContaining.
+
+- deve ser possivel eu listar as transacoes
+
+- Jamais posso escrever um teste que depende de outro teste
+
+- se um teste depende do outro, entao eles deveriam ser o mesmo teste, e nao deveria ter dois testes
+
+- teste E2E precisa se abster de qualquer contexto 
+
+- temos que criar cada teste, partindo do principio que os outros testes nao existem 
+
+- entao se eu quero testar criar transacoes eu preciso criar transacoes antes 
+
+ - /test/transactions.spec.ts
+
+
+### Configurando banco de testes
+
+- Nesta aula, você aprenderá como se deve lidar com o banco de dados durante os testes e2e e como configurar esse processo, utilizando variáveis ambiente de testes e a função beforeEach.
+
+
+
+- executamos varias vezes os testes aqui na nossa aplicacao
+- agente esta usando aqui nessa aplicacao o mesmo, banco de dados
+- tanto para testes, quano em desenvolvimento 
+- entao se eu abrir o meu banco de dados
+
+	- db/migrations/app.db
+
+- para visualizar minha tabela de transaction 
+- fizemos muitos new transactions
+- agente esta criando cada vez que agente executa os testes aqui na nossa aplicacao 
+- novas transacoes com o nome new transaction
+- e aqui esta dando tudo certo pq, quando os testes rodam agente acaba criando uma nova sessao e digamos parece que agente esta em um ambiente completamente isolado do mundo real 
+
+- mas no mundo real em uma aplicacao eh muito ruim que 
+- que quando o teste crie coisas no banco de dados e tudo mais 
+- essas coisas ficam la jogadas sabe, para quando agente estiver em ambiente de desenvolvimento, ficar um monte de recurso jogado 
+- e tbm isso pode dar problema 
+- os items que agente criou la em ambiente de desenvolvimento
+- podem atrapalhar o teste aqui para rodar
+
+- se eu rodar um teste com o nome New transaction
+- e o nome da transacao eh unico 
+- se eu rodar o teste uma vez ele vai funcionar mais se eu rodar dinovo nao vai funcionar pq o banco de dados ja tem aquela informacao 
+
+- que era unica antes, como que eu vou criar 
+
+- Uma das coisas importantes dos testes eh que toda vez que eu executo os meus testes o melhor dos mundo eh que eu esteja em um ambiente, isso inclui banco de dados 
+- zerado, um ambiente digamos que nao tenha interferencia externa 
+- um banco de dados totamente limpo 
+- para eu poder executar os meus testes do total zero
+
+- so que se agente lembrar
+- aqui no nosso arquivo .env
+- onde agente defini a url, do nosso banco de dados
+- hoje nao temos uma forma para mudar a url do banco de dados, baseado em alguma coisa,
+
+- a URL do banco de dados esta fixa aqui dentro do database.ts
+- .env eh carregado sempre
+
+- vamos criar na aplicacao um arquivo chamado
+- na raiz do projecto .env.test
+
+ + .env.test
+ 
+- vou coloca-lo no .gitignore
+
+- dentro do .env.test eu vou colocar variaveis ambiente que eu quero que sejam chamadas somente no ambiente de teste
+- entao o 
+
+	+ NODE_ENV=test
+	+ DATABASE_URL="./db/test.db"
+
+- vamos criar tbm um outro arquivo na raiz do projecto chamado
+
+	+ .env.test.example
+	
+- para quem baixar o meu codigo do github
+- tenha um de exemplo para que a pessoa possa copiar e criar
+- copio tudo do
+
+	- .env.test
+	- to
+	- .env.test.example
+	
+- Quando executamos os testes com uma ferramenta de teste como o vitest ou com jestjs
+- automaticamente essas variaveis, preenche a variavel NODE_ENV
+- com test
+- ou seja, essa variavel NODE_ENV=test
+- eu nao preciso informar dentro do arquivo
+- .env.test
+
+- pq ela eh preenchida automaticamente pelo vitest
+
+- com essa variavel preenchida com test somente quando eu estou executando os testes
+
+- agora temos algumas variaveis ambiente 
+- temos dois arquivo de variaveis ambiente diferentes
+- para cada um dos contextos para cada um dos ambientes da minha aplicacao 
+	+ para desenvolvimento, 
+	+ para producao, 	
+	+ um ambiente de test
+
+- O mais interessando eh que quando eu salvar
+- e eu rodar os meus testes 
+- ele cria um novo db, que eu o 
+- test.db dentro da pasta db
+
+	- /db/test.db
+
+- pq agora quando o meu arquivo no database.ts
+- importou minhas variaveis ambiente, o valor do DATABASE_URL,
+- Nao era mais app.db e sim test.db
+
+- /transactions.spec.ts
+- import { execSync } from 'node:child_process'
+
+- com essa execSync eu consigo executar comandos no terminal, por dentro da minha aplicacao node 
+
+- o cenario ideal dentro de testes E2E
+- eh que toda vez que meus testes executam 
+- eu tenha um ambiente totalmente zerado 
+- inclusive o banco de dados
+- como que eu posso ter meu banco de dados totalmente zerado
+- para cada um dos testes para cada um dos caminhos que eu for executar
+
+- eu posso antes de cada um dos testes, desfazes todas as migrates
+- ou seja zerar o meu banco de dados e depois eu crio as tebelas dinovo 
+- ou seja a cada teste eu apago o banco e crio dinovo 
+
+- rodando os testes, tudo funcionando novamente, so que tomou mais tempo e vai cada vez tomar mais tempo 
+
+- por isso que testes E2E
+- eh igual amigo, poucos e bons
+- temos que ter poucos testes E2E, comparado com os testes unitarios
+
+- so que eles tem q ser efetivos 
+- eles tem que testar aquela funcionalidade de ponta a ponta
+- pq na maioria das vezes eles sao lentos 
+
+
+
+### Finalizando testes da aplicação
+
+- Nessa aula, implementaremos os testes das rotas restantes e concluindo os testes de todas as rotas.
+
+
+
+
+### Preparando para deploy
+
+- Nessa aula, você vai aprender sobre o que é deploy e como preparar a aplicação para ir ao ar. Abordaremos configurações importantes como a de build e o uso de tsup.
+
+
+- existem uma infinidade tanto de servicos 
+
+	+ AWS
+	+ Google Cloud Pass (GCP)
+	+ Eger
+	+ Azure
+	
+- ou servicos mais gerenciados 
+
+	+ Render
+	+ Fly
+	+ Vercel
+	
+
+- mas existem tambem uma infinidade de arquiteturas de deploy
+- arquitetura de Deploy
+- eh formas de subir o projecto 
+
+- eu posso estar usando uma arquitetura **server less** 
+- que nao vem ao caso da gente entender o que eh isso agora 
+
+- podemos usar
+
+	+ Docker
+	+ Cuber neets
+	+ Escalonamento Orizontal 
+		- gerenciado pelo servico de Infra
+
+
+- nesse projecto vamos usar uma forma de Deploy um pouco mais simples 
+- usando um **Servico Gerenciado**
+
+- Servico Gerenciado,
+- quando agente usa um servico que ele automatiza mais as coisas pra gente
+
+
+- mas se estivessemos fazendo deploy em uma AWS / GCP / Azure
+- teriamos que fazer processos na mao,
+- que essas outras plataformas entregam prontos
+- a um maior custo 
+
+- mas para nosso primeiros projectos nao vamos nos preocupar muito com isso e simplificar um pouco o processo 
+- em projectos futuros veremos outras formas diferentes de arquitetar a nossa aplicacao, nossa infra e de fazer Deploy 
+
+
+
+- Primeiro passo para fazer deploy da nossa Aplicacao 
+- eh entender q nosso codigo esta em TypeScript
+- Nenhuma plataforma de Deploy de Node, vai entender codigo TypeScript
+
+	+ Primeiro passo eh converter nosso codigo para JavaScript
+
+- Com isso eu preciso de alguma forma conseguir fazer isso
+- Podemos usar o proprio compilador do TypeScript 
+
+- Indo dentro das configuracoes do tsconfig.json
+
+	- tsconfig.json
+
+- passo o diretorio onde esta meu codigo 
+
+	$ "rootDir": "./src"
+
+- que eh o diretorio onde vai sair o codigo compilado
+
+	$ "outDir": "./build"
+
+- vou no meu projecto e rodo o codigo para criar o codigo em JavaScript
+
+	>	$ npx tsc
+
+- processo foi lento, e quanto mais code bases, mais lento fica o processo
+- temos outras ferramentas que sao melhores para fazer o Build do nosso projecto
+- vamos comentar as duas linhas que tinhamos editado do tsconfig.json
+
+
+### Install Tsup para fazer a Build JavaScript da aplicacao
+
+- install
+	>	$ npm i tsup -D
+
+- Eh mais uma ferramenta para trabalhar com TypeScript 
+- para fazer o processo de Build 
+- que eh converter nosso codigo de TypeScript para JavaScript
+
+- o mais legal do Tsup, 
+- assim como o tsx que estamos usando para executar o codigo 
+- e o vitest que estamos usando para executar nossos testes 
+- o Tsup usa por debaixo dos panos tbm o 
+
+- **esbuild**
+
+- Que eh uma ferramenta fantastica que agente usa para acelerar os processos para trabalhar com codigo TypeScript, um codigo mais moderno
+
+- no arquivo package.json
+
+### Criando Script Tsup
+- package.json 
+
+$
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "knex": "node --no-warnings --loader tsx ./node_modules/.bin/knex",
+    "lint": "eslint src --ext .ts --fix",
+    "build": "tsup src --out-dir build",
+    "test": "vitest"
+  },
+
+- rodamos o codigo
+
+	> $ npm run build
+
+- sem nenhum erro e muito rapido e foi criada a pasta
+
+ + build
+
+- que possui todo o codigo da nossa aplicacao convertido em JavaScript
+
+- primeiramente esse codigo gerado nao eh para entendermos 
+
+- agora apenas executando o node, ja podemos executar nosso server
+
+	> $ node build/server.js
+
+- isso que precisamos garantir, 
+- que nosso servidor funciona sem qualquer TypeScript
+- rodando node puro 
+
+- Vamos agora fazer mais alguns ajustes na estrutura do projecto Build
+
+
+- Primeiro que nao faz sentido o ESLint rodar no nosso Build 
+- para corrigir
+- criar um arquivo na raiz do projecto
+- chamado .eslintignore
+
+	+ .eslintignore
+
+- vou falar que a pasta Build precisa ser ignorada
+
+$ 
+node_modules
+build
+
+- acessando os arquivos JavaScript, podemos ver que nao tem mais erros de ESLint 
+
+- outra config eh o .gitignore
+- a pasta build precisa ir no .gitignore
+
+	- .gitignore
+	
+$
+ 
+	# Dependencies
+	node_modules
+	
+	# Database
+	db/*.db
+	
+	# Environment
+	.env
+	.env.test
+	
+	# Build
+	build
+
+
+- Pratica importante do .gitignore
+- eh ir Categorizando as coisas, colocando comentarios
+
+
+- Vamos subir esse Projeto dentro do GitHub
+
+- Voce pode criar o repositorio aqui pela interface do GitHub
+- Prefiro utilizar a CLI do GitHub
+
+- install CLI GitHub
+
+	> $ sudo apt install gh
+	
+- para criar o repositorio 
+
+
+- Subindo projeto no GitHub via CLI
+
+	$ git init
+	
+	$ git add .
+	
+	$ git commit -m "Initial Commit"
+	
+	$ gh repo create
+		  - criar um novo repositorio do zero
+		x - enviar um codigo local que eu ja tenho pro GitHub	
+	 
+	$ .
+			- Path to local repository / path onde ta meu codigo local
+
+	$ 02-api-rest-nodejs
+			- nome do repositorio
+
+	$ lookjota
+			- Repository owner
+	
+	$ Public
+			- Visibility
+			
+	$ y
+			- Add a remote / para poder fazer guit push
+			
+	$ origin
+			- What should the new remote be called
+			
+	$ y
+			- Would you like to push commits from the current branch to "origin"?
+
+
+- pronto tudo criado
+- agora rodamos o codigo para abrir o repositorio no GitHub no browser
+
+	$ gh repo view -w
+
+
+
+### Deploy do app no Render
+
+- Nessa aula você aprenderá como configurar a aplicação para suportar dois bancos de dados: SQLite (para desenvolvimento) e PostgreSQL (para produção). Além disso, você verá como fazer o deploy na plataforma Render, configurando o banco de dados PostgreSQL e variáveis ambiente.
+
+Obs.: Na plataforma Render, a variável ambiente para identificar a porta da aplicação precisa ser exatamente PORT e não pode ser definida nas configurações do serviço, pois é a própria plataforma que adiciona esse valor (não é visível).
+
+Build Command: npm install && npm run knex -- migrate:latest && npm run build
+Start Command: node build/server.js
+
+
+- existem muitas plataformas para voce fazer Deploy do seu Back-end 
+- entre elas eu acho que poderia listar 3 que tem um plano gratuito legal, para voce testar a plataforma
+- e depois pagar quando a sua plataforma/app realmente precisar ir pra producao 
+
+- Muito gente que quer hospedar suas primeiras aplicacoes, procura opcoes totalmente gratuitas para conseguir manter a aplicacao em producao 
+
+- Lenda de Coisas Gratuitas da sua cabeca 
+
+- Apartir do momento que seu app estiver em producao e comecar a ter usuarios reais, dificilmente voce vai conseguir manter a sua aplicacao com custo gratuito, pricipalmente o back-end 
+
+- Voce vai ter que ter pelo menos algum tipo de custo pq todas as solucoes gratuitas elas vao te limitar bastante 
+- em questoes desde
+- banco de dados 
+- manter a sua aplicacao no ar 
+
+- cuidado com esse pensamento de: quero manter as coisas gratuitas 
+
+- claro que todas essas opcoes que vamos te passar ela tem um plano gratuito 
+- para voce testar por um bom tempo ai 
+- e ver se faz sentido pra voce 
+
+- as 3 melhores opcoes atualmente, 
+- para voce fazer Deploy de uma aplicacao Node, de maneira mais tradicional 
+
+	+ render.com
+	+ fly.io
+	+ railway.app
+	
+- **Render**
+
+	+ Otima opcao 
+	+ paineil de admnistracao muito bom
+	+ Deploy
+		- sites Statics
+		- web Services
+		- background workes
+		- cron jobs
+		- banco de dados postgre
+		- redis
+		- Private Services
+		- Docker
+		
+	
+- **fly**
+
+	+ otimo tbm
+	+ um pouco mais complexo, para iniciantes 
+	+ Hospedar varios tipos de aplicacoes 
+		- Banco de Dados
+
+- **railway**
+
+	+ Varios tipos de aplicacoes 
+	+ Banco de Dados
+		- Postgee
+
+
+### vamos usar Render
+
+- Primeiro passo
+	+ Criar uma conta
+
+- apartir do momento que agente usa um query builder no proprio knex
+- no futuro se agente quiser trocar de banco
+- deveria funcionar sem problemas
+
+- no render, ele suporta apenas **PostgreSQL**
+- a grande maioria dos sistemas de hospedagem vao suportar apenas **PostgreSQL**
+- pq **Postgre**
+- eh o unico banco relacional, realmente open source 
+- super acessivel e facil de utilizar
+- a maior comunidade de banco relacional esta por volta do Postgre
+
+
+	+ New PostgreSQL
+	
+	+ name 
+	+ region
+	+ Create Database
+
+- vamos fazer algumas alteracoes na nossa aplicacao 
+- para que o Deploy possa ser feito 
+
+- Primeiro passo
+- nossa aplicacao precisa suportar
+	+ banco sqlite
+	+ banco postgresql
+
+- comecar criando uma nova variavel ambiente 
+
+	- src/env/index.ts
+
+## Instalar o pg / Postgresql
+
+- install
+	$ npm i pg
+
+- agora no database.ts agente vai trocar o 
+
+- src/database.ts
+
+	- client: 'sqlite'
+	- para
+	- client: env.DATABASE_CLIENT,
+	
+
+- o render usa uma versao antiga do node
+- entao vamos no package.json
+
+- package.json
+
+$ 
+  "main": "index.js",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+
+- agora vamos configurar a PORT do server
+
+- Gracas ao **Zod**
+- existe uma funcionalidade
+- que eh o **coerce**
+
+	- src/env/index.ts
+	
+const envSchema = z.object({
+  PORT: z.coerce.number().default(3333),
+})
+
+- **Coerce** = nao interessa quanto tipo de valor eu vou receber na porta, transforme isso em um numero e se isso nao retornar um valor valido o default eh 3333
+
+- **Coerce** faz uma conversao, se for numero ou string ele sabe lidar, convertendo a string em um numero 
+
+
+- feito isso ja ajustamos tudo que precisavamos 
+
+- vamos colocar o codigo dentro do github
+
+	$ git status
+	$ git add . 
+	$ git commit -m "first commit"
+	$ git push -u origin main
+
+### Site Render / render.com
+
+- O nosso Banco de Dados ja esta pronto 
+- e la em baixo temos a URL de acesso ao Banco de Dados
+	+ Internal DataBase URL
+	+ External Database URL
+	
+- se voce for acessar o Banco de Dados da sua maquina
+		- tem que ser External Database URL
+		
+- acessando o Banco de Dados de outros servicos do Render, por dentro do Render, como nossa aplicacao vai estar Hospedada no Render
+		- Podemos usar o Internal Database URL
+
+	+ click para copiar a Internal Database URL
+	
+	+ Dashboard
+	
+	+ new
+	+ Web Service = eh a nossa aplicacao 
+	
+- find your project
+	
+	+ conecte
+	
+- Preencher algumas informacoes
+
+	+ nome: ignite-nodejs-02-api
+	+ region: Ohio
+	
+	+ branch: main
+	+ Environment: node
+	+ Build Command: npm install && npm run knex -- migrate:latest && npm run build
+	+ Start Command: node build/server.js
+
+	+ Advanced
+	+ Add Environment Variable
+		$ DATABASE_CLIENT $ pg
+		$ DATABASE_URL		$	postgres://ignite_nodejs_02_db_jhjo_user:f37VUpJneTGreq630Ai3KJaL4pQ0bO5T@dpg-ch4npij3cv23dkleb500-a/ignite_nodejs_02_db_jhjo
+
+	+ Create Web Service
+
+- Generating container image from build. This may take a few minutes...
+
+- ele esta criando um cash da nossa build 
+- ele ta pegando todos os arquivos gerados pela nossa build 
+- ele ta criando uma imagem do Docker 
+- esta criando uma versao executavel da nossa aplicacao 
+- como se fosse um zip
+- eh mais facil da proxima vez que ele for executar a nossa aplicacao, dele ter esse "zip" pronto 
+
+	- vai retornar
+	- starting service with 'node build/server.js'
+	- HTTP Server Running
+	
+- Rodando o projeto na maquina que agente contratou, maquina gratuita 
+
+- na parte supeior click no link
+
+	- https://ignite-nodejs-02-api-9a3s.onrender.com
+
+- copia esse link e vamos para o **Insominia**
+
+	+ Create transaction
+	
+- troca localhost pela URL que copiamos
+
+	+ https://ignite-nodejs-02-api-9a3s.onrender.com/transactions
+	+ send
+
+	+ List Transaction
+	+	https://ignite-nodejs-02-api-9a3s.onrender.com/transactions
+	+ send
+
+- **Insomnia** 
+	
+	+ No Environment
+	+ Manage Environment
+	+ Sub Environments +
+	+ dev
+			{ "url": "http://localhost:3333" }
+	+ color
+
+	+ Sub Environments +
+	+	prod
+			{ "url": "https://ignite-nodejs-02-api-9a3s.onrender.com" }
+	+ color
+
+	+ close
+
+- No Environment voce seleciona o ambiente que voce quiser usar
+- e voce tera acesso aquela variavel URL do Render
+- deletamos tudo que tem haver com a URL 
+- deixando apenas a /transactions 
+- e antes do /transactions eu dou um ctrl+space
+- ele ja tras a variavel URL pra voce 
+- ou digita url e espera um pouco
+
+- dai em todos voce coloca
+
+	+ ctrl+space = _.url/transactions
+
+- quando quiser trocar o ambiente
+
+- eh so trocar o environment de Prod or Dev
+
+	+ Prod
+	+ Dev

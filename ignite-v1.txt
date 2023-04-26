@@ -1,0 +1,542 @@
+# Ignite
+
+## Reactjs
+
+### Rendering pattern / padroes de renderizacao
+### SPA
+
+ modelo antigo
+- **SSR** = usado pelo wordpress / github 
+
+	$	back-end + front-end  < > browser
+
+ modelo novo
+- **SPA** (Single Page Application)
+- uso por Angularjs, Vue, React
+
+	$
+		browser - 
+			> www.meusite.com/users
+		back-end 
+			> JSON
+		web(React) 
+			> HTML/CSS/JS
+		browser
+
+### Compilers & Bundlers
+
+**Compiler = Vite** ex: babel
+- Para poder rodar em browser mais antigos ou desatualizados
+- compilers compiladores de codigo
+- compilers converte de um formato para outro
+- Mais famoso Compiler Babel
+- vite e snowpack
+
+**Bundlers = vite** ex: webpack 
+- Vite melhor que webpack
+- ajuda na transferencia de arquivos para sites mais antigos e desatualizados
+- convert varios arquivos em um unico arquivo para que o browser possa ler
+- importa todo tipo de file
+		
+	webpack
+		.js .png .sass .jpg .cjs .hbs 
+			> 
+		.js .css .png .jpg
+
+### alternativas eh Vite
+**Vite** 
+- voce tem o melhor dos dois mundos
+
+### vite tras o fast refrash
+**fast refrash**
+
+### install node lts version
+- utilizar version manager
+
+ $ npm install -g n
+ 
+ $ n install lts
+
+### create project with Vite
+
+ $ npm create vite@latest
+ $ y
+ $ 01-fundamentos-reactjs
+ $ react
+ $ js - mas futuramente sera - ts
+ 
+- open project
+- cd 01-fundamentos-reactjs
+
+- instalando dependencias
+ $ npm i
+
+- rodar 
+ $ npm run dev
+ 
+### limpando files desnecessarios
+
+- deletando todos os arquivos css e svg
+- sobrando apenas 
+	+ App.jsx
+	+ main.jsx
+
+### react-dom 
+
+- responsavel por renderizar nos browser
+
+- **react dom - para web** / **react native - para mobile**
+- a forma que temos de trabalhar com o react na web
+- dom eh a arvore de elementos da nossa aplication
+- basicamente o dom permite que o react se comunique com arvore de elementos do html
+- html convertido em uma sintaxe de objeto de um js
+
+
+### Components
+
+- uma parte da nossa aplicacao
+- que pode ser repetida
+- formas de encapsular codigos dentro de um unico elemento
+- formas de organizar a aplicacao
+- dividir a app em varios pedacos operacionais
+- dentro do react tudo sao components 
+- comeca com primeira letra maiuscula e um componente por arquivo
+
+
+
+### Name Exports vs Default Exports
+**Name Exports** melhor e mais seguro
+
+- ja faz a export junto com a function
+ex: 
+	export function Post() {
+	return <p>Post</p>
+	}
+
+- import 
+
+	import { Post } from './Post'
+
+### Property / propriedades / props
+
+- poder trazer informacoes 
+- conceito de propriedade
+- enviar uma informacao do componente pai/mae para o filho
+- enviar uma informacao de um componente que esta por fora para um que esta por dentro
+
+- uso do props
+- props alterao elementos visuais de um sistema
+
+- pai
+	$	
+		import { Post } from './Post'
+		
+		export function App() {
+		  return (
+		    <div>
+		      <Post
+		        author="Diego Fernandes"
+		        content="Loren ipsum dolor sit anet"
+		      />
+		      <Post 
+		        author="Gabriel Buzzi"
+		        content="Un novo post muito legal"
+		      />
+		
+		    </div>
+		  )
+		}
+
+- filho 
+	$
+		export function Post(props) {
+		  return ( 
+		    <div>
+		      <strong>{props.author}</strong>
+		      <p>{props.content}</p>
+		    </div>
+		  )
+		}
+
+### CSS module vite possui suporte
+
+- Header.jsx
+- Header.module.css
+
+$ Header.jsx
+	import styles from './Header.module.css'
+
+	export function Header() {
+	
+	  return (
+	    <header className={styles.header}>
+	      <strong >Ignite Feed</strong>
+	    </header>
+	  );
+	}
+	
+$ Header.module.css
+	.header {
+	  background: #333;
+	  height: 80px;
+	}	
+
+### Cores - criar a sua paleta de cores
+
+### 
+
+### verificar a tag
+
+	    <div>
+	      <Header/>
+	      <div>
+	        <aside>
+	          
+	        </aside>
+	      </div>
+	
+	    </div>
+
+- strong > negrito > nomes
+- span > negrito > cargos
+- aside
+- <article>
+
+### repositorio de imagens gratuitas
+
+- Unsplash
+
+### icones geralmente se usa bibliotecas 
+
+- **phosphor**
+- https://phosphoricons.com/ biblioteca
+
+- eh necessario instalar a biblioteca phospho
+
+	$ npm i phosphor-react
+	
+### css +
+
+- estilisar todo post que tenha apos o post
+- css +
+	$
+		.post + .post {
+		  
+		}
+
+### css >
+
+- pega so a header do primeiro nivel 
+- ccs >
+	$
+		.post > header {
+		
+		}
+		
+### react
+### conceito components
+### 2 grandes momentos que criamos 1 componente
+
+- dois grandes momentos onde criamos um **componente**
+
+- Primeiro momento
+
+	quando algo repete muito em tela
+	com o mesmo visual
+
+- Segundo ponto
+
+	e quando voce consegue tirar algo de um componente maior sem que aquele componente maior pare de funcionar
+	
+	assim voce deixa aquele componente maior mais limpo 
+	com a funcionalidade mais clara de receber manutencao
+
+### conceito de propriedade / property / props
+
+- maneira de se comunicar com os components
+- propriedade property props
+
+
+### conceito de desestruturacao javaScript
+
+	const user { name: "Diego" }
+	
+	const { name } = user
+
+### react important iteracao
+
+- nada mais eh na programacao que repetir coisas
+- ex:
+	+ eu vou percorrer um array e para cada elemento do array eu vou fazer alguma coisa
+	+ .map
+
+### install biblioteca para trabalhar com datas
+
+- install biblioteca
+
+	$ 	npm i date-fns
+
+### conceito de Estado / State
+
+- sao variaveis que eu quero que o componente monitore
+- tem uma variavel e quando o valor dela mudar o react mostre as novas informacoes alteradas, ai criamos o **Estado**
+
+		  const [comments, setComments] = useState([
+		    'Post muito bacana, hein?!'
+		  ])
+
+
+# programacao Declarativa
+### programacao imperativa - nao deve ser usada
+
+- O que deve ser feito (passo a passo)
+
+	receita de bolo 
+
+1. ligar o forno a 180"
+2. Abrir a porta do forno
+3. colocar a massa numa forma
+4. colocar a forma com a massa dentro do forno
+
+### programcao Declarativa - mais usada no react
+
+- as condicoes para eu ter o resultado
+
+	receita de bolo
+	
+1. O forno precisa estar a 180'
+2. Qaundo o forno estiver quente, eu posso colocar a massa pra assar
+3. Quando a massa estiver pronta, eu posso retira-la do forno
+
+
+### conceito key React
+
+- 3 momentos em que um compoennte eh rendereizado novamente no react.
+
+1. Quando o estado altera;
+2. Quando a propriedade altera;
+3. Quando um componente pai renderiza novamente;
+
+-----
+1, 2, 3, 4
+----
+1, 2, 3, 4, 5
+----
+
+- por que nao posso usar o indice do array?
+	js
+		const posts = [1, 2, 3, 4, 5] 
+
+
+### um dos ensinamentos mais importantes do react
+
+- A unica forma de eu comunicar um componente com o outro eh atravez das propriedades / props
+
+
+### imutabilidade
+- as variaveis nao sofrem mutacao
+- na imutabilidade nos nunca alteramos uma variavel na memoria da app
+- nos criamos um novo valor (criamos um novo espaco na memoria)
+
+- a imutabilidade permite que sejamos mais performatico
+
+### filter javascript
+
+- eh um metodo que ele percorre cada comentario, ai entao daqui de dentro se eu retornar true ele ira mantar na lista e se eu retornar false ele vai remover da lista o item.
+
+- quero filtrar para manter na lista apenas os comentarios que forem diferentes do comentario que eu quero deletar
+	
+$
+  function deleteComment(commentToDelete) {
+    const commentsWithoutDeletedOne = comments.filter(comment => {
+      return comment !== commentToDelete;
+    })  
+
+
+    // imutabilidade
+    setComments();
+  } 
+
+
+### como funciona a execucao das funcoes no react
+
+- js
+
+	function Commnet(props) {
+	  const [likes, setLikes] = useState(0)
+	
+	  function addLike() {
+	    setLikes(likes + 1);
+		setLikes(likes + 1);
+	  }
+	}
+	
+	comment(props, 0)
+	comment(props, 1)
+
+### atualizar informacao react
+
+- sempre que voce for atualizar uma info 
+e essa info depende do valor que ela tinha anteriormente
+eh sempre legal fazer a atualizacao com esse padrao de funcoes
+
+-js
+  function handleLikeComment() {
+    setLikeCount((state) => {
+      return state + 1
+    })
+  }
+
+### typescript
+
+- inferencia de tipos
+
+  interface User {
+    name: string;
+    bio: string;
+    age: number;
+  }
+
+  function sumAge(users: User[]) {
+    let sum = 0;
+
+    for (const user of users) {
+      sum += user.age;
+    }
+
+    return sum;
+  }
+
+  const sumOfAllUserAges = sumAge([
+  	{
+  	  name: 'Diego',
+  	  bio: 'CTO @Rocketseat',
+  	  age: 27,
+  	}
+  ])
+
+### Typescript
+
+- iniciando novo projecto em Typescript e aproveitando o projecto anterior
+
+- code
+- create a new folder
+
+  $ npm create vite@latest
+  $ y
+  $ 01-fundamentos-reactjs-ts
+  $ react
+  $ react-ts
+  
+- acessa o projecto
+- code
+
+  $ cd 01-fundamentos-react-ts
+  $ npm i
+  $
+  
+- Remover todos os arquivos da pastas src 
+
+  + App.css
+  + App.tsx
+  + favicon.svg
+  + index.css
+  + logo.svg
+  + main.tsx
+
+- deixando apenas o vite-env.d.ts que nao iremos mecher nele
+
+  + vite-env.d.ts	
+
+- agora vamos no package.json que iremos migrar as dependencias
+- apenas copiando as dependencias que faltam
+
+"depencies": {
+	"date-fns": "^18.0.0",
+	"phosphor-react": "^1.4.1"
+}
+
+- code 
+	$ npm i
+
+
+### HTML - na parte de html iremos copiar dois links 
+- No arquivo index.html 
+
+- copiar tres links de fontes
+
+$
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
+
+
+### copiando os arquivos antigos para o novo sistema ts
+
+- selecionando todos os aquivos dentro de src
+- segurando shift voce pode selecionar todos e copiar
+
+- vai na pastas src do projecto ts e copia todo para dentro dela
+
+- agora o porjecto antigo ja pode ser fechado
+
+### renomear nome dos arquivos antigos para .ts
+
+- ex: App.tsx
+
+### corrigindo erros
+
+- main.tsx
+
+- colocar uma esclamacao apos root !
+
+$
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import { App } from './App'
+
+ReactDOM.createRoot(document.getElementById('root')!).render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+)
+
+
+### corrigindo erro 
+	
+- erros in props
+
+	
+	
+- copy all code post.tsx
+
+- corrigindo / copy all
+
+	+ Post.tsx
+	+ Comments.tsx
+	+ Avatar.tsx
+
+
+
+### quiz
+
+Questão 1. Qual é uma das características de uma linguagem de tipagem dinâmica?
+Resposta
+
+Ser possível trocar o valor de uma variável para um tipo diferente do valor anterior em tempo de execução.
+
+Questão 2. O que é o TypeScript?
+Resposta
+
+É uma linguagem de programação construída em cima do JavaScript, que traz tipagem e novas funcionalidades.
+
+Questão 3. O código abaixo é válido no TypeScript? ```tsx interface CreateUser { name: string; age: number; } function createUser(user: CreateUser) { // ... } createUser('Diego Fernandes'); ```
+Resposta
+
+Não, não é válido.
+
+Questão 4. Para que serve o generic no TypeScript?
+Resposta
+
+É uma forma de enviar tipos como parâmetros.

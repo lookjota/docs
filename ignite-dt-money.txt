@@ -1,0 +1,604 @@
+# Ignite
+### dt-money
+
+- figma 
+- https://www.figma.com/community/file/1138814493269096792/DT-Money
+
+
+### setup project
+
+- iniciando
+$ 
+	npm create vite@latest
+	03-dt-money
+	react
+	react-ts
+	
+	cd 03-dt-money
+
+- limpando a estrutura do nosso projeto
+- comecar removendo arquivos denecessarios
+
+	- assets
+	- index.css
+	- App.css
+
+- instalando as dependecias
+$
+	npm i
+
+- inicializando o projeto
+$ 
+	npm run dev
+
+- instalando componentes necessarios
+- styled components
+$
+	npm i styled-components
+
+- a tipagem do styled components
+	npm i @types/styled-components
+
+### folders
+
+  + src/styles/global.ts
+	+ src/styles/themes/default.ts
+
+### configurando os styles
+
+- app.ts
+$
+import { ThemeProvider } from "styled-components";
+import { defaultTheme } from "./styles/themes/default";
+
+export function App() {
+
+  return (
+    <ThemeProvider theme={defaultTheme}>
+      <div>hello word</div>
+    </ThemeProvider>
+  )
+}
+
+- criar aquivo de tipagem
+
+ + src/@types/styled.d.ts
+
+- adicionando as fontes
+
+- procurar no google font roboto
+- pegar as 
+- regular 400 e bold 700 e copiar os link e colar no index.html
+
+
+### corrigir os erros de lint na app
+### install eslint 
+
+- install
+- code
+$
+	npm i eslint @rocketseat/eslint-config -D
+
+ + root/.eslintrc.json
+
+- code
+$
+{
+  "extends": "@rocketseat/eslint-config/react"
+}
+
+- retornando todos os problemas de lint
+$
+	npx eslint src --ext .tsx,.ts
+	
+- arrumando todos os problemas
+$
+	npx eslint src --ext .tsx,.ts --fix
+
+- configurando script
+- package.json
+
+$
+  "scripts": {
+    "dev": "vite",
+    "dev:server": "npx json-server server.json -p 3333 -w -d 500",
+    "lint": "npx eslint src --ext .tsx,.ts",
+    "lint:fix": "npx eslint src --ext .tsx,.ts --fix",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+
+- para executar o script
+- para retornar problemas
+- code
+$
+	npm run lint
+	
+- para arrumar problemas
+- code
+$
+	npm run lint:fix
+
+
+### criando components Header
+
+ + src/assets/logo.svg
+ + src/pages/Transactions/index.tsx
+ + src/pages/Transactions/styles.ts
+
+ + src/components/Header/index.tsx
+ + src/components/Header/styles.ts
+
+ + src/components/Summary/index.tsx
+ + src/components/Summary/styles.ts
+
+### Icons libary
+
+- instalando
+$ 
+	npm i phosphor-react
+
+### components searchForm
+
++ src/pages/transactions/components/SearchForm/index.tsx
+
+### criando modal acessivel dialog
+### radix ui biblioteca
+
+- biblioteca que ja tras toda a acessibilidade para o react 
+- Ariakit
+- headless ui
+- chakra ui
+- radix ui
+
+- radix eh um serie de components primitivos
+- components primitivos imitao o comportamento original de coisas queja existem na web, porem trazendo uma api mais flexivel para adicionarmos estilizacao e alguns outros comportamentos
+- https://www.radix-ui.com/
+
+- agente instala somente os componentes que formos usar
+- install
+$ 
+	npm install @radix-ui/react-dialog
+
+- vamos usar um componente radix para controlar a informacao de qual botao foi selecionado pelo usuario 
+- install
+$ 
+	npm install @radix-ui/react-radio-group
+
+### Consumingo uma API
+### JSON-Server
+
+**JSON Server**
+
+- Aprender a usar a API de fatch
+- vamos precisar consumir uma API
+- uns dos focos desse projecto eh agente aprender a utilizar a API  de fetch do navegador para fazer comunicacao de um front-end com um back-end
+- independente da linguagem que esse back-end seja criado
+- Vamos estar seguindo um padrao de uma API rest full 
+
+- Como nos nao temos um back-end para esse projeto, gente nao criou um back-end em nenhuma outra linguagem, agente esta fazendo o projecto especificamente em react
+- agente precisa de uma ferramenta, que permita que agente tenha pela menos uma simulacao de um back-end para comecarmos a testar a application 
+
+- JSON Server para mim eh uma das melhores opcoes que agente tem atualmente
+- se voce nao conhece o JSON server, eh um projeto muito famoso tem mais de 60k stars no github 
+
+- basicamente o que ele faz eh apartir de um arquivo json, cria uma API completa para agente e quando eu digo completa, eh completa mesmo
+- funcionalidades, ele permite agente
+	+ Criar rotas / Singular routes
+	+ Fazer filtros / Filters
+	+ Paginacao / Paginate
+	+ Ordenacao / Sort
+	+ Consegui na paginacao cortar um pedaco / Slice
+	+ Fazer operacoes / Operators
+	+ Full-text search
+	+ Relacionamentos / Relationships
+	+ Armazenar os dados / Database
+	+ Homepage...
+
+
+- Install json-server 
+$ 
+	npm i json-server -D
+
+- criando file na raiz do projeto	
+	+ 03-dt-money/server.json
+
+- rodando json-server
+$
+	npx json-server server.json -p 3333
+	
+	npx json-server server.json -p 3333 -w -d 500
+
+
+- https://github.com/typicode/json-server
+
+- para acessar
+	+ http://localhost:3333/	
+	+ http://localhost:3333/transactions
+	+	http://localhost:3333/transactions/1 **mostra somente o id:1**
+	+ http://localhost:3333/transactions?type=income **filtro**
+	+ http://localhost:3333/transactions?type=outcome **filtro**
+	+ http://localhost:3333/transactions?_sort=createdAt **sort**
+	+ http://localhost:3333/transactions?_sort=createdAt&_order=desc
+	+ http://localhost:3333/transactions?q=venda **text busca**
+	+ http://localhost:3333/transactions?q=site **text search**
+
+- para ver a data em formato json 
+- inspect browser
+- open console
+$
+	new Date().toISOString()
+	
+- retorna
+	+ "2023-04-12T18:44:16.966Z" 
+
+
+**Monitoramento**
+- por padrao o json server nao fica monitorando o arquivo do server.json para ver se ele mudou e mostrar as informacoes atualizadas, se eu quero fazer esse funcionamento 
+- passar um novo comando
+
+- code 
+$
+	npx json-server server.json -p 3333 -w
+
+- esse -w eh o modo watch, ele vai ficar observando as mudancas e vai atualizar o servidor 
+
+- json-server eh uma API completinha e ele eh otimo para o momento que agente ta desenvolvendo um front-end e agente nao tem o back-end, isso acontece muito no dia-a-dia no mercado de trabalho 
+- agente ja pode ir deixando o react preparado para consumir uma API, assim que ela for ao ar 
+
+- uma das fetures que eu gosto de habilitar aqui no json-server para deixar tudo mais realista 
+- eh a fiture de delay
+
+- code
+$
+	npx json-server server.json -p 3333 -w -d 500
+	
+- ele ira adicionar 500 milisegundos de delay em todas as requisicoes
+
+- agora nao interessa qual requisicao eu faca no server
+- ele demora 500 milisegundos para responder
+
+- isso eh otimo pq quando agente desenvolve uma API em localhost, muitas das vezes agente nao tem delay, o delay eh muito baixo e agente acaba nao vendo como vai ficar realmente a nossa interface quando ela estiver em producao e tiver ali com o minimo de latencia 
+
+- com o delay agente lembra de colocar os 
+	+ estados de loading, lembrar de desabilitar um botao por exemplo.
+	+ na hora de fazer uma insercao, para o usuario nao ficar clicando mil vezes naquele botao, disparando mil requisicoes
+
+- para lembrar do comando
+- vamos criar um novo script package.json
+
+$
+  "scripts": {
+    "dev": "vite",
+    "dev:server": "npx json-server server.json -p 3333 -w -d 500",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+
+- to execute
+- code
+$	
+	npm run dev:server
+
+- o json-server funciona exatamente como um back-end funciona na vida real 
+
+### Realizando Requisicao HTTP
+
+### criando contexto de transacoes Context
+
+ + src/contexts/TransactionsContext.tsx
+
+### calculando resumo de transacoes 
+
+### formatando valores
+
+ + src/utils/formatter.ts
+
+- error no formatter date
+- Transaction/index.tsx new date l:30
+
+
+### Criando hook para o resumo
+
+ + src/hooks/useSummery.ts
+
+### aplicando React Hook Form 
+
+- instalar algumas bibliotecas
+- code
+$
+	npm i react-hook-form zod
+
+- zod nao funciona so para validacao
+- zod ajuda no schema do formulario 
+- schema eh qual que eh o formato do objeto de dados que agente vai receber quando realizar um submit desse formulario 
+
+- entao eh super importante utilizar o zod mesmo que voce nao tenha necessariamente um validacao nos campos 
+
+### handle... handleSumit()
+
+- acoes que sao disparadas atraves de uma acao do usuario seja um submit, click, pull? ... qualquer coisa assim 
+- eu gosto de iniciar o nome da funcao com **handle** **handleSumit**
+
+- assim fica mais facil para eu saber que essa funcao foi disparada atraves de uma acao do usuario
+
+
+- funcoes que sao disparadas atravez de sideEffect ou simplesmente sao chamadas pela minha propria aplicacao eu gosto de chamar elas por exemplo nesse caso **searchTransactions** para eu saber que eh uma nao eh uma funcao que vai ser disparada atraves de um evento 
+
+
+### instalando mais uma biblioteca
+### hookform/resolvers
+
+- instalando mais uma biblioteca
+- code 
+$ 
+	npm i @hookform/resolvers
+
+### controlled components
+
+- existem duas formas de contruir fomulario principalmente formularios no react que eh de uma maneira uncontrolled e uma maneira controlled 
+
+- **uncontrolled** eh basicamente agente buscar a informacao do nosso input somente quando agente realizar o submit e isso funciona pra todos os elementos input nativos da html 
+
+- **Controlled** eh quando agente anota o valor de uma informacao, armazena o valor de uma entrada do usuario toda vez que o usuario mudar aquele valor, ou seja, se isso fosse um input. cada vez que ele digitasse uma informacao, agente armazenava isso em algum estado ou alguma variavel 
+
+- nesse caso iremos usar o conceito de **Controlled** 
+- para fazer isso no React Hook Form
+
+### Buscando trasacoes
+
+### configurando axios
+
+- configurar um biblioteca para fazer as configuracoes HTTP
+- muitas vezes quando agente usa fetch ele nao tem a API mais amigavel do mundo
+
+
+- install axios
+- code
+$ 
+	npm i axios
+
+- axios eh a biblioteca mais famosa in back e front 
+
+ + src/lib/axios.ts
+
+### criando nova transcao 
+
+### corrigir os erros de lint na app
+### install eslint 
+
+- install
+- code
+$
+	npm i eslint @rocketseat/eslint-config -D
+
+ + root/.eslintrc.json
+
+- code
+$
+{
+  "extends": "@rocketseat/eslint-config/react"
+}
+
+- retornando todos os problemas de lint
+$
+	npx eslint src --ext .tsx,.ts
+	
+- arrumando todos os problemas
+$
+	npx eslint src --ext .tsx,.ts --fix
+
+- configurando script
+- package.json
+
+$
+  "scripts": {
+    "dev": "vite",
+    "dev:server": "npx json-server server.json -p 3333 -w -d 500",
+    "lint": "npx eslint src --ext .tsx,.ts",
+    "lint:fix": "npx eslint src --ext .tsx,.ts --fix",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+
+- para executar o script
+- para retornar problemas
+- code
+$
+	npm run lint
+	
+- para arrumar problemas
+- code
+$
+	npm run lint:fix
+
+### Utilizando React DevTools
+
+- ferramenta para conseguir inspecionar app react
+- principalmente no que tange performance e ciclos de renderizacao
+
+- react devtools
+- eh uma extensao para os browser
+
+### aplicando Context Selector
+
+- cuidado para nao tentar resolver problema de performance que nao existem ainda de forma prematura
+
+- quando agente tenta criar um codigo com todos os problemas de performance evitados, agente acaba criando um codigo menos performatico
+
+- pq como eu falei o react por si so, ele ja eh muito rapido
+- nao necessariamente agente vai ter ficar a todo momento evitando renderizacoes 
+- pq o algoritmo de reconciliacao do react que eh o algoritmo que roda por de baixo dos panos que calcula, quando que um component, deve ou nao ser renderizado ou ser recriado em tela
+
+- temos que tomar cuidado com essas otimizacoes de performance de forma prematura
+
+- quando queremos olhar a questao de performance agente vai
+- inspect
+- profiler
+- entender atraves dos commites atraves das acoes que agente faz, o que foi renderizado e ai sim olhando pelo tempo de renderizacao, agente vai entender as coisas que poderiam ser evitadas de renderizar
+
+
+
+- no react na conta padrao de api agente nao consegue falar pra um components, olha eu quero que voce olhe apenas para informacao createTransaction e nao para outras que estao dentro do contexto
+
+const { createTransaction } = useContext(TransactionsContext)
+
+- nao eh possivel fazer isso
+
+- no react intedependente de qual informacao mudar dentro desse contexto, todos os componentes que dependem de qualquer informacao desse contexto vao ser renderizados
+
+- eh um conceito que agente chama de selector 
+
+- temos uma biblioteca criada para resolver esse problema 
+- use-context-selector 
+
+- install
+- code
+$ 
+ npm i use-context-selector scheduler
+
+
+
+### avisar erros typescript
+$
+	npx run tsc --noEmit
+
+### aplicando o useCallback
+
+- o que ele vai fazer, ele vai evitar com que alguma funcao, seja recriada em memoria, se nenhuma informacao que aquela funcao dependa digamos assim, tenha mudado
+- esse array de dependencia funciona como no useEffect
+- o que eu passar para esse array de dependecia, variaveis ou qualquer coisa assim eh o que vai fazer essa funcao ser recriada em memoria 
+
+- se meu array de dependecias for vazio essa funcao nunca vai ser recriada em memoria, mas cuidado se essa funcao aqui estiver precisando de alguma informacao que venha de fora dela, eu preciso colocar essa inforcao que vem de fora, aqui no array de depencia, se nao quando o usuario executar essa funcao essa informacao que vem aqui de fora vai estar com o seu valor desatualizado, com o valor original digamos assim, antes de qualquer modificacao pelo usuario 
+
+$
+  const createTransaction = useCallback(
+    async (data: CreateTransactionInput) => {
+      const { description, price, category, type } = data
+
+      const response = await api.post('transactions', {
+        description,
+        price,
+        category,
+        type,
+        createAt: new Date(),
+      })
+
+      setTransactions((state) => [response.data, ...state])
+    },
+    [],
+  )
+
+### aplicando memo
+
+- pq que um component renderiza
+- 3 motivos
+- Hooks changed (mudou estatos, contexto, reducer )
+- Props changed (mudou propriedades)
+- Parent redenred (componente pai renderizou)
+
+- qual o fluxo de renderizacao?
+ 1. O react recria o HTML da interface daquele componente
+ 2. Compara com a versao do HTML criada com a versao anterior, ou seja, o react compara essa nova visualizacao do searchForm com o anterior
+ 3. Se mudou alguma coisa, ele reescreve o HTML na tela
+ 
+- o fluxo de renderizacao segue esses 3 passos e isso aqui eh extremamente rapido, por isso que nem sempre vale a pena agente ficar tentando evitar renderizacoes no react
+
+- pense comigo se um componente meu tem um html muito grande, muito grande mesmo, imagina que aqui dentro desse component searchForm.
+- imagina que eu percorrece uma lista de 200 itens, isso acabasse gerando um HTML bem grande 
+- essa comparacao da versao do html recriada com a versao anterior
+- iria ficar bem lento, pq o react teria que comparar cada coisinha cada detalhe ali dentro para ver se esta tudo igual ou nao 
+- ou seja quanto mais o componente no quesito o que ele retorna, mais agente pode ter problema com essa questao de lentidao no fluxo de renderizacao e ai somente nesses casos agente deve e pode olhar
+- para utilizar um carinha que vem de dentro do react que se chama
+
+- memo
+- import { memo } from 'react';
+
+- O memo eh uma funcao que agente usa em componentes do react para agente conseguir memorizar aquele componente 
+- Memo nada mais eh do que o seguinte
+
+- quando o react entra no fluxo de 3 passos da renderizacao e o componente usa o memo esse fluxo acaba mudando um pouco 
+- antes de fazer o fluxo dos 3 passos existe o passo 0 digamos assim
+- o memo ira adicionar um passo a mais antes desse fluxo de 3 passos 
+- o memo vai olhar o seguinte 
+
+ 0. Hooks changed, Props changed (deep comparison)
+ - ele vai olhar de forma profunda pros hooks e pras propriedades desse componente, comparar 
+ 0.1: Comparar com a versao anterior dos hooks e props 
+ 0.2: Se mudou algo, ele vai permitir a nova renderizacao 
+ - ai entra no fluxo dos 3 passos 
+ - porem se nao mudou nada ele nem vai entrar no fluxo dos 3 passos de recriar o HTML que pode ser algo pesado 
+
+- agente envita usar memo em componentes que sao simples
+
+
+### aplicando o useMemo
+
+- agente entendeu que eu posso utilizar o useCallback para evitar que alguma funcao seja recriada em memoria, quando ele precisar nao ser recriada em memoria e aqui inclusive eu utilizei o useCallback dentro dessa funcao fetchTransactions, o react pede que eu coloque essa fetchTransactions como uma dependecia do useEffect
+- isso nao tem problema nenhum, como essa funcao fetchTransactions nao tem nenhum dependencia, ela nunca vai ser recriada isso nunca vai fazer com que meu useEffect dispare mais vezes, ele vai desparar uma unica vez pq a fetchTransactions, so ta sendo criada uma unica vez 
+
+- agente aprendeu a evitar como funcoes sejao recriadas em memoria 
+
+- mais agente nao aprendeu como agente pode evitar que variaveis, sejam recriadas em memoria 
+
+- para o mesmo caso de uso de funcoes, agente nao vai fazer isso com todas as variaveis da nossa application, pelo mesmo motivo que acabamos de citar do memo 
+
+- muitas das vezes eh mais performatico agente recriar aquela variavel em memoria do que necessariamente ficar comparando duas versoes daquela variavel para ver se mudou alguma coisa
+
+- por isso muitas das vezes eh melhor agente deixar aquela variaveis sejam recriadas em memoria mesmo 
+
+- o unico problema de variaveis sendo recriadas em memoria eh caso aquela variavel seja usada, seja repassada pra varios outros componentes e assim agente cai naquele problema de igualdade referencial, pq mais que a variavel nao tenha mudado o seu valor, quando ela eh recriada, ela ocupa um novo espaco na memoria e com isso o react acaba renderizando novamente componentes que talvez nao precisassem ser renderizados
+- pq na verdade o valor da variavel nao mudou 
+
+- nessa application agente nao tem necessariamente um caso de uso que poderiamos aplicar isso 
+
+- que seria algum tipo de calculo aqui dentro do contexto de alguma informacao e essa informacao ser repassada aqui para o contexto 
+
+- entao para fins didaticos iremos aplicar a utilizacao do useMemo dentro do hooks/useSummary.ts
+- que possui calculos nesse hook 
+
+- ele eh exatamente como o memo que agente usou para memorizar um componente porem para memorizar variaveis 
+
+- que vai acontecer com o uso de useMemo essa variavel
+- const sumary
+- so vai ser recriada quando o transactions mudar 
+
+- antes ela era recriada toda vez que esse useSummary() aqui fosse renderizado dinovo
+
+$
+
+import { TransactionsContext } from '../contexts/TransactionsContext'
+import { useContextSelector } from 'use-context-selector'
+import { useMemo } from 'react'
+
+export function useSummary() {
+  const transactions = useContextSelector(TransactionsContext, (context) => {
+    return context.transactions
+  })
+  const summary = useMemo(() => {
+    transactions.reduce(
+      (acc, transaction) => {
+        if (transaction.type === 'income') {
+          acc.income += transaction.price
+          acc.total += transaction.price
+        } else {
+          acc.outcome += transaction.price
+          acc.total -= transaction.price
+        }
+        return acc
+      },
+      {
+        income: 0,
+        outcome: 0,
+        total: 0,
+      },
+    )
+  }, [transactions])
+  return summary
+}
+
+
+### useCallback vs useMemo
+
+- useCallback memoriza funcoes
+- useMemo memoriza variaveis

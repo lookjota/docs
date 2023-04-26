@@ -1,0 +1,767 @@
+1) # Ignite 
+### project Ignite Timer
+
+### rever aula 
+- funcionalidades da aplicacao
+- O Hook useEffect
+
+### Creating project
+
+- code 
+- va ate o folder 	
+
+	$ npm create vite@latest
+	$ 02-ignite-timer
+	$ react
+	$ react-ts
+	 
+	$ cd 02-ignite-timer
+	$ npm i
+	$ npm run dev
+
+
+### Limpando arquivos / Deletando files do project
+
+- deletando arquivos do src
+
+	+ App.css
+	+ favicon.svg
+	+ index.css
+	+ logo.svg
+
+### editando
+	
+- codando
+
+	+ main.tsx
+	+ App.tsx
+	+ index.html
+
+### Styled Components
+
+- Usando um conceito chamado css in js
+- Nesse projeto, nós vamos utilizar o Styled Components para criar as estilizações da nossa aplicação.
+
+O Styled Components é uma biblioteca de CSS-in-JS que permite que a gente utilize o CSS dentro do JavaScript e em um formato parecido com os do React, adicionando muitas funcionalidades à estilização da nossa aplicação.
+
+Vamos ver nessa aula como configurar o Styled Components, seus principais conceitos e começar a estrutura de estilização da aplicação.
+
+- instalando styled components
+- code
+	$ npm i styled-components
+	$ npm i @types/styled-components -D
+
+### coding
+
++ src/components
++ Button.tsx
++ Button.styles.ts
+
++ src/styles/themes
++ themes/default.ts
+
++ src/@types
++ @types/styled.d.ts
+
++ src/styles/global.ts
+
+
+### cores e fontes
+
+- Roboto regular 400, bold 700
+- Roboto mono bold 700
+
+
+### Configurando ESLint
+
+- ESLint ecma script linting, validar que seu codigo esta seguindo padroes estipulados pelos criadores do projeto
+
+- padroniza os codigos em estilo e identacao
+
+- O ESLint permite que a gente configure diversas regras para padronizar a organização do nosso código.
+
+Isso vai desde como deve ser o comportamento de quebras de linha, ponto-e-vírgula, vírgulas e até mesmo regras para nomeação de variáveis ou plugins que ajudam a gente à não esquecer algumas regras do React.
+
+- precisa ter a extensao instalada
+- ESLint
+
+- instalando eslint
+
+	$ npm i eslint -D
+	
+	$ npm i @rocketseat/eslint-config -D
+
+- criar um file .eslintrc.json
+	+ .eslintrc.json
+
+- para configurar o eslintrc.json
+$ .eslintrc.json
+	{
+	  "extends": "@rocketseat/eslint-config/react"
+	}
+
+- para testar
+- comando para procurar arquivos com erros
+
+$ npx eslint src --ext .ts,.tsx
+
+- configuracao vscode para corrigir os erros
+
+- no vscode
+- crtl + shifit + p 
+- Preferences: Open User Setting (JSON)
+- e adicione essa linha de codigo
+$
+	"editor.codeActionsOnSave": {"source.fixAll.eslint": true}
+
+- agora toda vez que for salvo um arquivo o ESLint ja ira corrigir todas a identacoes
+
+- mas se voce quiser corrigir todas as identacoes do projeto de uma so vez, siga o codigo
+- code
+$ npx eslint src --ext .ts,.tsx --fix
+
+
+- verificar erros
+$ npx eslint src --ext .ts,.tsx
+- corrigir erros
+$ npx eslint src --ext .ts,.tsx --fix
+
+- vamos criar um script no package.json para facilitar a execucao do code do ESLint
+
+- abrir package.json
+
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "lint": "eslint src --ext .ts,.tsx"
+  },
+
+- agora para executar a busca do lint
+
+$ npm run lint
+
+- para corrigir os erros
+
+$ npm run lint --fix
+
+
+
+- Caso queria configurar o eslint
+	$ npx eslint --init 
+
+
+
+### React router DOM
+
+- Aprendendo a lidar com rotas
+- instalando react-router-dom
+
+$ npm i react-router-dom
+
+- criar uma pasta pages dentro de src
+
+	+ src/pages
+	+ pages/Home.tsx
+	+ pages/History.tsx
+
+- criando um componente de rotas
+- vamos criar as rotas em um componente separado
+
+	+ src/Router.tsx
+
+- Router.tsx
+$
+	<Routes> = esse componente sempre fica em volta de tudo
+
+	<Route /> = esse componente representa cada pagina, cada rota
+
+	path="" = essa propriedade pede o endereco que sera acessado
+					- no caso da home, colocamos apenas a /
+					- <Route path="/" />
+
+	element={} = essa propriedade indica o componente / elemento que
+						- ira carregar, que no caso eh a Home
+						- element={<Home />}
+
+	<Routes>
+		<Route path="/" element={<Home/>} />
+		<Route path="/history" element={<History />} />
+	
+	</Routes>
+
+- entao dentro do App.tsx
+- importamos e add a linha de code
+
+	$
+		import { ThemeProvider } from 'styled-components'
+		import { defaultTheme } from './styles/themes/default'
+		import { GlobalStyle } from './styles/global'
+		import { Router } from './Router'
+		
+		export function App() {
+		  return (
+		    <ThemeProvider theme={defaultTheme}>
+		      <Router />
+		      <GlobalStyle />
+		    </ThemeProvider>
+		  )
+		}
+
+### Continuando a configuracao do react-router-dom
+
+- indo na documentacao do github react router dom 
+- guie start guide /  guia de inicializacao
+
+- ele fala que nos precisamos importar o 
+- BrowserRouter do react-router-dom
+
+- e fazer um wrap do nosso app App.tsx dentro do <BrowserRouter>
+
+- entao vamos no nosso App.tsx
+- importar { BrowserRouter } from 'react-router-dom'
+
+- vamos envolver toda a application com o BrowserRouter
+- o importanque eh que o BrowserRouter fique envolvendo as nossas rotas
+
+$
+	import { ThemeProvider } from 'styled-components'
+	import { defaultTheme } from './styles/themes/default'
+	import { GlobalStyle } from './styles/global'
+	import { Router } from './Router'
+	
+	import { BrowserRouter } from 'react-router-dom'
+	
+	export function App() {
+	  return (
+	    <ThemeProvider theme={defaultTheme}>
+	      <BrowserRouter>
+	        <Router />
+	      </BrowserRouter>
+	      <GlobalStyle />
+	    </ThemeProvider>
+	  )
+	}
+
+
+### Layout das Rotas
+
+- comecar criando um componente
+	+ components/Header.tsx
+
+- vamos criar uma nova pasta chamada layouts
+	+ src/layouts
+	+ src/layouts/DefaultLayout.tsx
+
+- DefaultLayout sera usado para fixar o header e poder alterar somente o conteudo da aplicacao mantendo o header
+
+- para isso nos temos um componente que vem de dentro do 
+- react-router-dom que se chama <Outlet>
+- <Outlet> = eh um espaco para ser inserido um conteudo
+
+- entao o react-router-dom quando ele estiver utilizando, esse layout, com o <Outlet> ele vai saber exatamente onde ele tem que posicionar o conteudo que eh especifico de uma pagina 
+
+$ 
+	import { Outlet } from 'react-router-dom'
+	import { Header } from '../components/Header'
+	
+	export function DefaultLayout() {
+	  return (
+	    <div>
+	      <Header />
+	      <Outlet />
+	    </div>
+	  )
+	}
+
+- como fazer para utilizar o layout, vamos ate as Router.tsx
+- agente vai por volta das duas <Route />
+- iremos colocar mais um elemento <Route></Route>, colocando ela por volta das outras <Route />
+
+- colocamos novamente o path="/" para aplicarmos esse layout em todas as rotas
+
+- fica dessa forma pq as rotas vao somando os paths pai com os paths filhos
+
+- ex:
+$	
+	<Route path="/admin" element={<AdminLayout>}>  //pai
+		<Route path="/products" />									 //filho
+	<Route> 
+
+- se fosse ser acessado seria
+- http://localhost:3000/admin/products
+
+$
+	import { Routes, Route } from 'react-router-dom'
+	import { Home } from './pages/Home'
+	import { History } from './pages/History'
+	import { DefaultLayout } from './layout/DefaultLayout'
+	
+	export function Router() {
+	  return (
+	    <Routes>
+	      <Route path="/" element={<DefaultLayout />}>
+	        <Route path="/" element={<Home />} />
+	        <Route path="/history" element={<History />} />
+	      </Route>
+	    </Routes>
+	  )
+	}
+
+### Header e Layout
+
+- criar pasta
+	+ layout/DefaultLayout
+
+- mudar nome do file DefaultLayout.tsx para index.tsx e move-lo para a noda folder DefaultLayout
+	+ layout/DefaultLayout/index.tsx
+	+ DefaultLayout/styles.ts
+	
+
+- mudamos o arquivo de header.tsx para index.tsx e movemos
+	+ src/componets/Header
+	+ src/componets/Header/index.tsx
+	+ Header/styles.ts
+
+### pacote de icons Phosphor-react
+
+- instalando
+	$ npm i phosphor-react
+
+### trocar as ancoras dos links <a></a>
+- por um component do react-router-dom 
+- no nosso Header/index.tsx
++ import { NavLink } from 'react-router-dom'
+
+- substituindo os <a></a> por <NavLink></NavLink>
+
+- em vez de <a href="" alt=""></a>
+- nos usamos o <NavLink to="" title=""> </NavLink>
+
+$
+      <NavLink to="/" title="Timer">
+        <Timer size={24} />
+      </NavLink>
+      <NavLink to="/history" title="History">
+        <Scroll size={24} />
+      </NavLink>
+
+- o NavLink faz de forma automatica eh colocar na ancora/link que esta por volta do nosso icone, uma classe chamada active class="active"
+- podemos usar essa classe active, la no meu estilo para fazer uma estilisacao do link
+
+### page Home
+
++ pages/Home/index.tsx
++ Home/styles.ts
+
+### page history
+
++ pages/History/index.tsx
++ History/styles.ts
+
+### controlled vs Uncontrolled
+### melhor eh Uncontrolled
+
+- vale para formularios tbm
+
+- formulario pode ser trabalho com duas formas
+- controlled e uncontrolled
+
+- controlled > do que manter em tempo real o estado a informacao que nosso usuario insere na application dentro do estado
+
+- Uncontrolled > busca a informacao do valor do input somente quando precisar dela
+
+
+### biblioteca Formulários - React Hook Form
+
+- trabalha com os formularios tanto de maneira 
+- controlled quando de maneira uncontrolled
+- tem o melhor dos dois mundos
+
+- code
+	$ npm i react-hook-form
+
+- use is hook
+
+- os hooks sao functions que tem esse perfel de 
+- ex: useForm, useEffect, useState
+
+- acopalham a funcionalidade em um componente existente
+- 
+- quando se usa o useForm eh como se estivesse criando um novo formulario na nossa application 
+- a funcao **register** fala quais vao ser os campos que eu terei no meu formulario
+- register eh uma funcao que ela retorna 
+- metodos como onChange
+$
+ function register(name: string) {
+		return {
+			onCahnge: () => void,
+			onBlur: () => void,
+			onFocus: () => void,
+		}
+}
+
+- por padrao o react-hook-form nao tras nenhuma validacao
+
+- vamos usar a zod 
+- biblioteca de validacao zod
+
+### biblioteca de validacao zod
+
+- install
+$ 
+	npm i zod
+
+- para integrar o react-hook-form com o zod, precisamos installar mais uma biblioteca 
+- install
+$
+	npm i @hookform/resolvers
+
+- essa biblioteca permite integrar o react-hook-form com as bibliotecas d validacao do zod
+
+
+### padStart
+
+$
+  const minutes = String(minutesAmount).padStart(2, '0')
+  const seconds = String(secondsAmount).padStart(2, '0')
+
+- um metodo que preenche uma string ate um tamanho especifico caso ela nao tenha aquele tamanho ainda, com algum caracter
+
+- ex: a varivel de minutos eu quero que ela tenha sempre 2 caracters
+- caso ela nao tenha 2 caracteres e tenha apenas um, eu vou incluir '0' no comeco ou seja no start da string ate completar 2 caracteres 
+
+### useEffect
+
+- useEffect, useState sao hooks
+
+- hooks sao funcioes que comecao com o prefixo use e elas tem como intuito adicionar / acoplar algum funcionamento a algum componente da nossa aplicacao
+
+- **useState** eh um hook que agente consegue armazenar variaveis,** quando tem o seu valor alterado, provocam uma nova rendereizacao no componente, assim agente consegue exibir em tempo real uma informacao conforme ela for atualizada por alguma funcionalidade ou algum click no usurio ou qualquer coisa assim.
+
+- **useEffect** => Side-effect => Efeito Colateral
+- eh uma acao que ela eh desmembrada, ela acontece por causa de uma acao anterior, entao o efeito colateral ele eh
+- se eu fiz algum acao, isso tem um efeito colateral
+
+
+ex: 
+
+import { useEffect, useState } from 'react'
+
+function avisarAPI() {
+	console.log('Lista Salva')
+}
+
+export function App() {
+	const [list, setList] = useState<string[]>([])
+
+	const [filter, setFilter] =useState('')
+
+	useEffect(() => {
+  		avisarAPI();
+  }, [list])
+
+	useEffect(() => {
+  		fetch('https://api.githud.com/users/diego3g/repos')
+  			.then(response => response.json())
+  			.then(data => {
+  			 	setList(data.map((item: any) => ite,.full_name))
+  			 })
+  }, [])
+
+
+	const filteredList= list.filter(item => item.includes(filter))
+
+	
+		
+  function addToList() {
+			setList(state => [...state, 'Novo item'])	
+		}
+		
+  return (
+			<div>
+
+				<input
+					type="text"
+					onChange={e => setFilter(e.target.value)}
+					value={filter}
+				/>	
+				
+				<lu>
+					{list.map(item=> <li>{item}</li>)}
+				</lu>		
+			
+				<ul>
+					{list.map(item => <li>{item}</li>)}
+				</ul>
+				
+   <button onClick={addToList}>Add to list</button>
+	    </div>
+	 )
+}
+
+
+- useEffect eh muito simples
+- dentro do useEffect ele recebe 2 parametros 
+- primeira parametro eh qual funcao vai ser executada
+- segundo paramtro eh quando 
+- o segundo paramtro eh um array
+- dentro desse array eu passo qual variavel eu quero ficar monitorando
+- no caso vamos monitorar a variavel list
+- toda vez que essa variavel mudar
+- eu quero executar o metodo "avisar api"
+
+useEffect(() =>{
+	avisarAPI();
+}, [list])
+
+- nosso useEffect ele vai executar no inicio e depois, toda vez que minha lista for alterada
+- entao todo useEffect por padrao ele executa tambme assim que o componente eh exibido em tela uma, primeira vez 
+
+- e se agente nao quer executar nesse momento, vamos ter que colocar um if aqui dentro, validando 
+
+
+- muitas vezes durante a contrucao da nossa aplicacao, agente vai querer executar algum codigo, uma unica vez assim que o componente for exibido em tela
+- ex: uma chamada para uma API, para buscar dados do github ou qualquer coisas assim
+- nesses casos agente tbm pode usar do useEffect
+
+- useEffect ele vai executar 2 vezes em dois momentos na nossa aplicacao 
+- Primeiro mommento sempre que um componente for exibito em tela
+- todo useEffect ele executa assim que o componente for exibido em tela
+- Segundo momento eh toda vez que alguma das variaveis que agente passar aqui nesse array de dependencias mudarem, so que seu nao passar nada, aqui no array de dependencias, que dizer que ele vai executar apenas em um momento, que eh quando o componente aparecer em tela 
+
+- entao se eu quero que algum codigo, seja executado somente na primeira renderizacao, que eh a primeira vez que esse componente aparece em tela
+- basta criar um useEffect com o array de dependencias vazio
+
+- isso eh otimo quando eu quero fazer uma chamada API
+
+
+
+- eh muito comum quando as pessoas comecam a ulizadas do
+
+
+--------
+- agente dificilmente utiliza o useEffect para atualizar o estato
+- se o nosso useEfffect esta precisando muitas vezes atualizar o estado, de forma sincrona sem precisar fazer alguma requisicao como fizemos no exemplo ou esperar alguma coisa
+- provavelmente estamos cometendo algum error
+
+
+### reduzindo o countdown
+
+- como o 1 segundo nao eh preciso 
+- vamos comprar a date atual com a data do start date e ver quantos segundos ja se passaram 
+
+- para isso vamos instalar um package que chama 
+- date-fns
+- code
+$ npm i date-fns
+
+
+### separando components
+
++ src/pages/Home/NewCycleForm/index.tsx
++ NewCycleForm/styles.ts
+
++ src/pages/Home/Countdown/index.tsx
++ Countdown/styles.ts
+
+
+### Prop Drilling > Context API
+
+- quando temos muitas propriedades apenas para comunicacao entre componentes
+- para resolver isso temos outro conceito do react chamado
+- Context API
+- permite compartilharmos informacoes entre varios componentes ao mesmo tempo
+- A context API nao precisa utilizar de props, pq sao como conceitos globais que todos os componentes podem ter acesso, todos os componentes podem modificar essas acoes
+- e que quando modificado, independente de quem modificou essas informacoes, todos os componentes que dependiam/dependem dessa informacao sao atualizados 
+- e como se agente conseguisse se comunicar ao mesmo tempo cxom varios componentes da nossa application
+- dentro da Context API agente pode colocar o que agente quiser
+- state /
+- e assim vale pra qualquer outra informacao do nosso app
+
+
+### Context API
+
+- createContext
+
+import { createContext, useContext, useState } from 'reasct'
+
+const CyclesContex = createContext({} as any)
+
+function NewCycleForm() {
+  const { activeCycle, setActiveCycle } = usedContext(CycleContext)
+
+  return (
+    <h1>
+    	 NewCycleForm : {activeCycle}
+    	 <button
+    	   onClick={() => {
+    	     setActiveCycle(2)
+    	   }}
+    	 >
+    	   Alterar ciclo ativo
+    	 </button>
+    </h1>
+  )
+
+function Countdown() {
+  const { activeCycle } = useContext(CyclesContext)
+
+  return <h1>Countdown: {activeCycle}</h1>
+}
+
+export function Home() {
+  const [activeCycle, setActiveCycle] = useState(0)
+  
+  return (
+    <CyclesContext.Provider value={{ activeCycle, setActiveCycle}}>
+      <div>
+        <NewCycleForm />
+        <Countdown />
+      </div>
+    </CycleContext.Provider>
+  )
+}
+
+### convertendo para context
+
+### context entre rotas
+
++ src/contexts/CyclesContext.tsx
+
+
+### pre view json code
+
+$
+<pre>{JSON.stringify(cycles, null, 2)}</pre>
+
+$ show like
+
+[
+  {
+    "id": "1681181565579",
+    "task": "aa",
+    "minutesAmount": 5,
+    "startDate": "2023-04-11T02:52:45.579Z",
+    "interruptedDate": "2023-04-11T02:52:48.420Z"
+  }
+]
+
+
+### useReducer
+
+- criando reducer de cyclo
+- ele serve para armazenar uma irnformacao e alterar essa informacao no futuro
+
+- geralmente agente querer usar o useReducer para armazenar informacoes que sao mais complexas, principalmente na hora em que agente precisar alterar essas informacoes 
+
+- quando temos uma funcao que depende do seu estado anterior e essas alteracoes elas sao geralmente onerozas/custosas, com bastante codigos e calculos e tudo mais
+- nesses casos faz sentido sim agente criar um reducer
+
+- pq ele vai conseguir abstrair um pouco desse codigo para ficar mais simples na hora de utilizar e principalmente ele vai conseguir 
+- desacoplar um pouco essa logica 
+- se agente precisa interroper um ciclo, do usuario, um ciclo ativo 
+
+- com o reducer eh como se tivessemos um local fixo para todas as alteracoes que podem acontecer dentro de um estado do nosso componente, o estado que agente selecionar 
+
+- reducer recebe dois parametros
+
+$ ex:
+	const [cycles, setCucles] = useReducer(() => {}, []) 
+	
+- o primeiro  paramtro eh uma funcao
+- segundo parametro eh qual o valor inicial da minha variavel dos meus ciclos 
+
+
+- dentro dessa funcao
+$ 
+	const [cycles, setCycles] =	useReducer((state, action) => {
+	  return state
+	}, [])
+
+- essa funcao recebe dois parametros
+- state = representa o valor atual em tempo real da nossa variavel de cycles
+- action = ela eh qual acao o usuario ta querendo realizar de alteracao dentro da nossa variavel, essa action ela vai ser algo unico para indicar um acao que o usuario ta querendo fazer para alterar o nosso state
+
+
+- vamos comecar tipando o state, falando qual vai ser o formato dos dados que eu vou armazenar dentro do meu reducer aqui
+
+	const [cycles, dispatch] =	useReducer((state: Cycle[], action) => {
+	  return state
+	}, [])
+
+- **reducer** eh um pattern usado para varias coisas em varias ferramentas em varias bibliotecas diferentes em varios contextos diferentes 
+
+### reducers separando action types
+
++ src/reducers/cycles.ts
+
+### corrigindo bug ts
+- bug da integracao do eslint com typescript
+
+sobre reclamacao de bug que nao gera erro real na application
+
+'INTERRUPT_CURRENT_CYCLE' is defined but never used.eslintno-unused-vars
+(enum member) ActionTypes.INTERRUPT_CURRENT_CYCLE = "INTERRUPT_CURRENT_CYCLE"
+
+
+export enum ActionTypes {
+ x ADD_NEW_CYCLE x = 'ADD_NEW_CYCLE',
+ x INTERRUPT_CURRENT_CYCLE x = 'INTERRUPT_CURRENT_CYCLE',
+ x MARK_CURRENT_CYCLE_AS_FINISHED x ='MARK_CURRENT_CYCLE_AS_FINISHED',
+}
+
+- vamos abrir o .eslintrc.json
+
+$ .eslintrc.json
+
+{
+  "extends": "@rocketseat/eslint-config/react",
+  "rules": {
+    "no-unused-vars": "off"
+  }
+}
+
+- faz com que pare de reclamar daquele error
+
+
+### separando actions 
+
+- renomeando e criando um novo folder
+- src/reducers/cycles.ts
+- to
++ src/reducers/cycles/reducer.ts
++ src/reducers/cycles/actions.ts
+
+### utilizando Immer
+
+- Immer eh uma nova biblioteca que agente usa para trabalhar com dados imutaveis, que trabalho com o conceito de imutabilidade que eh algo muito utilizado dentro do react
+
+- os map. muitas vezes sao confusos e o immer possibilita que agente digamos, trabalhe com estrutura de dados imutaveis como se essas estruturas nao fossem imutaveis
+- ou seja ele permite agente faca alteracoes nas variaveis de estato do react de reducer do react como se fosse variaveis tradicionais do proprio javascript, ai de baixo dps panos ele converte essas alteracoes que agente fez em alteracoes imutaveis para agente nao precisar se preocupar com isso
+
+- install immer
+$
+	npm install i immer 
+
+
+- src/reducers/cycles/reducer.ts
+
+$
+       return produce(state, draft => {
+        
+      })
+
+- draft eh o rascunho e dentro desse rascunho eu faco as alteracoes que eu quero fazer, esse rascunho ele tem o mesmo formato que o meu state...
+- ate se passarmos o mouse por cima do draft vamos ver que ele eh um 
+- (parameter) draft: WritableDraft<CyclesState>
+
+- a diferenca eh que eu posso trabalhar com esse draft como se fosse uma estrutura de dados mutavel, sem me preocupar com a imutabilidade do react 
+
+- por exemplo se eu quero adicionar uma nova informacao no array de cycles
+
+- src/reducers/cycles/reducer.ts
+$ 
+      return produce(state, draft => {
+        draft.cycles.push()
+      })

@@ -1,0 +1,272 @@
+# Ignite
+
+## Reactjs
+
+
+## configuring environment
+
+### project github-explorer
+
+	- First step in project js 
+	- Initial repository
+	- creating package.json 
+
+		$ yarn init -y
+
+	- package.json would basically be the main information of the project
+	- most important dependencies of project
+	- dependencies is code of third people libarys
+
+### dependencies install 
+
+	- first libary
+	- install react
+		
+		$ yarn add react
+		
+	- react dom - para web / react native - para mobile
+	- install react dom 
+	- eh a forma que temos de trabalhar com o react na web
+	- dom eh a arvore de elementos da nossa aplication 
+	- html convertido em uma sintaxe de objeto de um js
+	- basicamente o dom permite que o react se comunique com arvore de elementos do html
+	- que ele saiba criar elementos em tela 
+
+		$ yarn add react-dom 
+
+### Comecar a criar estrutura de pastas
+
+	- src 
+	- public 
+
+### Confirando Babel
+
+	- serve para converter o codigo de uma maneira que todos os browser poassam reconhecer os codigos
+	- converte nosso codigo que uma maneira que os navegadores mais modernos possam entender
+
+	- install babel
+	
+		$ yarn add @babel/core @babel/cli @babel/preset-env -D
+
+	- create um file babel.config.js
+
+	- install new babel dependencie
+	
+		$ yarn add @babel/preset-react -D
+
+	- babe.config.js		
+		$ 	module.exports = {
+			    presets: [
+			        '@babel/preset-env',
+			        '@babel/preset-react'
+			    ]
+			}
+
+	- to converter code to dist
+	
+		$ yarn babel src/index.js --out-file dist/hundle.js
+	
+
+### create a new file
+	
+	- src/index.js
+	
+	
+### configurando o Webpack
+
+	- importa todo tipo de file
+	- .js .png .sass .jpg .cjs .hbs > .js .css .png .jpg
+
+	- install webpack 
+	
+		$ yarn add webpack webpack-cli -D
+
+	- create a file
+	- webpack.config.js
+	- ira conter as configuracoes
+
+	- install babel-loader
+	
+		$ yarn add babel-loader -D
+
+	- babel-loader eh a integracao entre o babel e o webpack
+
+	- to execute webpack to deploy
+	
+		$ yarn webpack
+
+### configuration the sctruture
+
+### install html-webpack-plugin
+
+	- install 
+	- para facilitar na hora do deploy para gerar o html
+	
+		$ yarn add html-webpack-plugin -D
+
+### install webpack-dev-server
+
+	- install 
+	- para o webpack ficar observando as mudancas nos codigos e mostrar automaticamente
+	
+		$ yarn add webpack-dev-server -D
+
+	- para o webpack ficar observando, rode o codigo
+	
+		$ yarn webpack serve
+
+### configration identificar erros no console do browser
+
+	- webpack.config.js
+	
+		$ devtool: 'eval-source-map',
+
+### production / development
+
+	- after config webpack.config.js
+	- code 
+	
+		$ NODE_ENV=production yarn webpack
+
+	- serve para definir variaveis de ambiente independente do sistema operacional
+	- install cross-env
+	
+		$ yarn add cross-env -D
+
+	- in package.json create scripts
+	
+		$ "scripts": {
+		    "dev": "webpack serve",
+		    "build": "cross-env NODE_ENV=production webpack"
+		  },
+
+### configuration css
+	
+	- aplication css
+	- install
+		$ yarn add style-loader css-loader -D
+
+### pre processador css = sass
+
+	- install sass
+	
+		$ yarn add sass-loader -D
+		$ yarn add node-sass -D		
+
+
+## 3 conceitos mais importantes do react
+### Components React
+
+	- formas de encapsular codigos dentro de um unico elemento
+	- formas de organizar a aplicacao
+	- dividir a app em varios pedacos operacionais
+	- dentro do react tudo sao components 
+	- comeca com primeira letra maiuscula e um componente por arquivo
+
+### Propriedade / Property / props
+
+	- conceito de propriedade
+	- enviar uma informacao do componente pai/mae para o filho
+	- enviar uma informacao de um componente que esta por fora para um que esta por dentro
+
+	- uso do props
+	
+	- pai
+		$
+			import { RepositoryItem } from "./RepositoryItem"
+			
+			const repository = {
+			  name: 'unform',
+			  description: 'Forms in React',
+			  link: 'https://github.com/unform/unform'
+			}
+			
+			export function RepositoryList() {
+			  return (
+			    <section className="repository-list" >
+			      <h1>Lista de repositorios</h1>
+			
+			      <ul>
+			        <RepositoryItem repository={repository}/>
+			        <RepositoryItem repository={repository}/>
+			        <RepositoryItem repository={repository}/>
+			        <RepositoryItem repository={repository}/>
+			
+			      </ul>
+			    </section>
+			  )
+			}
+
+	- pro filho
+		$
+			export function RepositoryItem(props) {
+			  return (
+			    <li>
+			    <strong>{props.repository?.name ?? 'Default'}</strong>
+			    
+			    <p>{props.repository.description}</p>
+			
+			    <a href={props.repository.link}>
+			      Acessar repositorio
+			    </a>
+			  </li>
+			  )
+			}
+			
+
+
+
+### conceito do uso de state / estado
+	
+	- uso de states para um contador
+		$	
+			import { useState } from 'react'
+			
+			export function Counter() {
+			  const [counter, setCounter] = useState(0);
+			
+			  function increment() {
+			    setCounter(counter + 1);
+			  }
+			
+			  return (
+			    <div>
+			      <h2>{counter}</h2>
+			      <button type="button" onClick={increment}>
+			        increment
+			      </button>
+			    </div>
+			  )
+			}
+	
+### Conceito a imutabilidade do state do react
+
+	- Uma variavel nunca vai poder ter o seu valor alterado 
+	- na verdade
+	- ela vai receber um novo valor 
+	- quando dizemos que uma variavel eh imutavel significa que nao podemos alterar diretamente o conteudo daquela variavel
+	- mas sim agente precisa dar um novo valor para aquela variavel
+
+	- imutabilidade
+		$
+			
+			usuarios = ['diego3g', 'diegosf', 'danileao']
+
+			novoUsuarios = [...usuarios, 'rafacamarada']
+
+
+### depedencia para a pagina carregar mais rapido
+
+	- install
+		$ yarn add @pmmmwh/react-refresh-webpack-plugin react-refresh
+
+	- mantem o valor salvo na pagina
+
+
+
+
+
+
+
+
+

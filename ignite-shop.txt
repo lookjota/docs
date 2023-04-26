@@ -1,0 +1,810 @@
+# Next
+
+https://nextjs.org/docs
+
+- next (ssr) ss render
+
+- next eh um servidor servido em nodejs
+
+- Next = servidor node 
+
+- NEXT (SSR)
+
+- static site genaration NEXT (SSG)
+
+
+### setup project
+
+- iniciando projecto
+- code
+$
+					npx create-next-app@latest
+					yes
+name				04-ignite-shop
+ts					yes
+eslint			yes
+tailwind		yes
+src				yes
+
+- rota correta do curso
+$ 
+					npx create-next-app@latest
+					yes
+name				04-ignite-shop
+ts					yes
+eslint			yes
+tailwind		no
+src				yes
+					no
+
+- deletando arquivos
+
+	- /pages/api
+	- /public/ = deletar todos os arquivos dentro de public
+	- /styles
+
+- mudar a extensao do index e app para tsx
+
+
+### criando rotas na aplicacao 
+
+- file system routing
+- roteamento baseado em arquivos fisicos
+
+- se eu quero criar um pagina que ela vai ser acessivel quando o usuario botar /product
+- eh so eu criar dentro da pasta pages um arquivo product.tsx
+- http://localhost:3000/product
+- ira aparecer a pagina pages
+
+- isso quer dizer que todo o arquivo que eu crie dentro da pasta pages, ele automaticamente vire uma rota 
+- menos alguns arquivos especificos que o next pro-ve para agente como o _app.tsx por ex
+
+ + src/pages/product.tsx teste
+
+ + src/pages/success.tsx 
+ + src/pages/product/index.tsx
+
+
+- o nome dos meus arquivos podem ser parametrizados 
+
+- mudar nome do arquivo
+- src/pages/product/index.tsx
+- para
+- src/pages/product/[id].tsx
+
+- http://localhost:3000/product/1
+
+- basicamente assim voce chama as rotas
+
+### configurando documento HTML
+
+- no caso do next agente nao tem acesso direto a esse arquivo index.html
+- para agente conseguir modificar coisas no documento global do html no next
+- agente precisa criar um arquivo dentro da pasta pages
+- mas as vezes esse arquivo ja vem 
+- chamado 
+- _document.tsx
+
+- no next ainda mais tudo sao components
+- inclusive o html da pagina como um todo
+- esse documento retorna o html global da pagina 
+
+- toda vez que eu modificar alguma informacao dentro do arquivo
+- _document.tsx
+- eu preciso re-startar a nossa application
+
+### Configurando Stitches
+
+- instalando biblioteca
+- code
+$
+	npm install @stitches/react
+
+ + src/styles/index.ts
+
+- para ter uma melhor distribuicao do css na application precisamos continuar a configurar o Stitches
+- https://stitches.dev/docs/server-side-rendering
+
+$ 
+_document.tsx
+
+import { Html, Head, Main, NextScript } from 'next/document'
+import { getCssText } from '../styles';
+
+
+export default function Document() {
+  return (
+    <Html lang="en">
+      <Head >
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
+
+        <style id="stitches" dangerouslySetInnerHTML={{ __html: getCssText() }} />
+
+      </Head>
+      <body>
+        <Main />
+        <NextScript />
+      </body>
+    </Html>
+  )
+}
+
+### estilos globais
+
+ + src/styles/glbal.ts
+ 
+### _app.tsx
+
+- Entendendo o _app.tsx 
+- Ele funciona como um wrapper/container para as paginas da nossa aplication o app eh como se fosse um componente que eh carregado junto com qualquer pagina da nossa aplication
+- Entao nao interessa se eu estiver acessando a home, product, success, index ...
+- todas essas paginas na verdade elas estao carregando o component App e esse componente app especifico ta carregando a pagina atravez desse component que ele tem aqui dentro
+- que inclusive agente pode adicionar typescript 
+
+### cabecalho da aplication
+
+- no figma pegar a logo do projecto 
+- clicando em cima e copy svg
+
+ + src/assets/logo.svg
+
+- cola dentro do logo.svg a copy do svg do figma
+
+
+
+- no next agente precisa lembrar que todo arquivo criado na pasta pages vira uma pagina na aplication,
+- no caso do next agente cria as estilisacoes separadas 
+
+ + src/styles/pages/app.ts
+
+### imagens no Next.js
+
+- precisamos que sejam carregados com muita performance
+- se eu to carregando uma imagem que tem 1000 pixel se na minha pagina ela so vai renderizar 400 pixel, como outros exemplos
+
+- o que o next faz para agente que eh fantastico eh que ele otimiza de forma automatizada todas as imagens que agente usar na nossa aplication
+- isso quer dizer que se eu importei uma imagem para dentro do meu projecto e essa imagem tem 1000 pixels de largura, mas eu to utilizando ela no meu layout com somente 400 pixels, o que Next vai fazer eh criar uma versao dessa imagem automaticamente que tenha somente 400 pixels de largura, para ele usar essa imagem, carregar essa imagem de 400 e nao a de 1000 
+
+- ele tambem consegue converter formatos da imagem para conseguir usar formatos mais recentes 
+- consegue criar imagens responsivas 
+
+- usamos a tag que vem diretamente do next
+
+$ 
+import logoImg from '../assets/logo.svg'
+import Image from 'next/legacy/image'
+
+<Image src={logoImg} alt=""/>
+
+
+
+### especificar dominios de imagem Next config
+
+ + next.config.js
+
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  reactStrictMode: true,
+
+  images: {
+    domains: [
+      'files.stripe.com',
+    ]
+  }
+}
+
+- salva, reinicia o servidor 
+
+### placeholder Next
+
+- ver como usar no Next doc
+- ele ajuda a carregar a imagem antes dela renderizar
+- mostrando uma imagem borrada para ficar sendo exposta enquanto a imagem termina de renderizar 
+
+
+
+### estrutura da home
+
+- vamos criar a visualizacao da tela, a home 
+- o carrosel / listagem do produto vai vir do stripe, mas por enquanto agente vai fazer ela estatica ate pq agente ainda nem conectou a API do nosso projecto 
+
+- imagens camisetas
+
+ + src/assets/camisetas/1.png
+ + src/assets/camisetas/2.png
+ + src/assets/camisetas/3.png
+
+ + src/styles/pages/home.ts 
+
+### criando carrosel 
+
+- vamos usar um elemento de carousel
+- keen-slider
+- install
+$
+	npm install keen-slider
+	
+### Stripe codando
+### configurar nossa conta no Stripe
+
+- acessar site do stripe
+ + https://dashboard.stripe.com/dashboard
+
+- pode comecar criando uma conta, mas voce ja tem uma muito boa para usar
+- krasnyy
+
+**acessar link**
+
+ + products
+ + add a product
+
+- Preencha Product Information
+
+ + Salve and add more
+
+- cadastre todos os produtos
+
+ + salve product
+
+- agora precisamos listar esses produtos na nossa aplication 
+
+ + developer
+
+- temos agora todo o painel de desenvolvimento do stripe
+
+ + chaves da API / API keys
+ 
+- Temos aqui as chaves que iremos usar para fazer nossas requisicoes 
+
+- vamos primeiro copiar a chave publica token
+- dentro da aplication 
+
+- vou salvar ela como uma Variavel Ambiente
+- Variavel Ambiente sao aquelas variaveis que agente quer que o valor delas mude de acordo com o ambiente da nossa aplication 
+ex: em desenvolvimento o valor dessa variavel vai ser 1 e em producao vai ser outro 
+- e tambem sao variaveis que agente vai manter elas secretas, elas nao vai para o github ou qualquer coisa assim 
+
+- No Next para criar Variaveis Ambiente crio um arquivo
+- na raiz do projecto
+
+ + .env.local
+ 
+- vamos salvar so o valor essas variaveis, entao 
+
+- .env.local
+$
+#Stripe
+
+STRIPE_PUBLIC_KEY=pk_test_51MwtDsFWnHi6eh3V5GauesKReyAhLeM3XyCV0XQAut4aRhn2MeIrxTbsoGmAmTYRR7zKnXmmAP90JoPL4rKjoZG500dHbll4ce
+STRIPE_SECRET_KEY=sk_test_51MwtDsFWnHi6eh3VmLpbQDIRcEBSJgTl7W3pgu5TLVMVakZeSYnZ9F6SLQLs4CPaFsntlK6I2ophiVWfba9cuL2G00S1x5wlXy
+
+- Ja estamos com a conta do Stripe configurada 
+- Ja estamos com as Variaveis Ambiente com as Chaves 
+- Agora agente ja pode comecar a fazer requisicoes para a API do Stripe, para comecar a listar os produtos 
+
+
+### Data Fetching no Next.js
+**Data Fetching no Next.js**
+
+- Data Fetching dentro do Next ou seja fazer chamadas HTTP Chamadas para API's externas dentro do Next
+
+- agente ja configurou a nossa API do Stripe mas por enquanto aqui nessa aula agente ainda nao vai utilizar ela, pq eu quero que voce conheca alguns conceitos importantes do Next, antes da gente partir para o uso dessa API
+
+- Podemos fazer chamadas API dentro de componentes do react para conseguir popular algum estado, fazer alguma lista
+- dando um exemplo mesmo sem fazer chamada API, do que seria o formato de fazer uma chamada API, dentro de um componente 
+- basicamente agente faz ...
+
+
+**Maneira Simples**
+
+- pages/index.tsx
+
+export default function Home() {
+  const [list, setList] = useState<number[]>([])
+
+  useEffect(() => {
+    setTimeout(() => {
+      setList([1, 2, 3])
+    }, 2000)
+  }, [])
+
+//setTimeout(() = tempo de delay para fazer test
+
+**Maneira Simples**
+	
+
+- isso aqui eh como se fosse uma chamada API
+- Assim que o componente eh exibido em tela o 
+
+ + useEffect(() => { 
+
+- entra em cena, ele faz a chamada API,
+
+ + setTimeout(() => {
+
+- Quando termina de buscar os dados na API que seja, ele preenche um estado com aquelas informacoes 
+
+ + setList([1, 2, 3])
+ 
+- ai pegamos a list e mostramos em tela
+
+ + return (
+ 		<pre>{JSON.stringify(list)}</pre>
+   )
+
+- stringify(list) para podermos visulizar ela 
+- entao esse exemplo eh mais ou menos como funciona uma API
+
+- Em qualquer pagina do next, qualquer arquivo que esteja dentro da pasta pages e somente arquivos dentro da pasta pages, nao eh possivel fazer isso em componentes que nao estijam na pasta pages
+
+- eu posso exportar e eu gosto de exportar isso sempre no final do component
+- uma funcao chamada getServerSideProps
+- que se agente for traduzir 
+- "getServerSideProps = Eu quero obter propriedade do server side"
+
+**Maneira correta**
+
+ + index.tsx
+
+export default function Home(props) {
+return (
+ <pre>{JSON.stringify(props.list)}</pre>
+)
+ 
+export const getServerSideProps = () => {
+ return {
+  props: {
+  	 list: [1, 2, 3]
+  }		
+ }
+}
+
+**somente informacoes cruciais**
+
+- ela pode devolver de dentro dela, algumas propriedades
+- por exemplo, ela pode devolver 
+- um lista contendo 1, 2, 3
+- como isso aqui que ja diz pelo proprio nome que sao propriedades, no react as propriedades, elas podem ser recebidas, pelo parametro aqui da nossa pagina 
+
+- atualizando a pagina a lista ja estara sendo produzida em pagina, mesmo se o js estiver desabilitado
+- mesmo no lado do servidor ela ja estara sendo exibida
+- nao apenas no lado do cliente 
+
+
+**somente informacoes cruciais**
+
+- Quando agente estava com o codigo do useEffect da maneira antiga, no componente home 
+
+- entao o que o Next Server Node faz eh ele nao devolve nada para o front-end / cliente side / browser ate que tudo que agente tenha colocado aqui dentro tenha sido executado
+
+ +
+	export const getServerSideProps = async () => {
+	  return {
+	    props: {
+	      list: [1, 2, 3]
+	    }
+	  }
+	}
+*####*
+
+- diferente de quando agente tem uma chamada de useEffect, que dai o react mostra, tudo em tela e depois comeca a fazer a chamada do useEffect, ou seja,
+
+- com o getServerSideProps, agente nunca vai ter um estado de load, por exemplo nessa list, pq a pagina nao vai nem ser exibida em tela, enquanto esses dados estao carregando
+- nao vai haver nenhum momento em que esses dados aqui vao estar digamos vazios, pq a chamada ainda nao foi finalizada, pq a pagina so vai ser exibida em tela, quando os dados estiverem carregados como um todo
+
+- uma outra coisa importante para entender
+- lembra que eu tinha colocado 
+
+
+- mas nem por isso, toda chamada de API sera feita usando o getServerSideProps 
+
+- mas na maioria das vezes agente ainda vai querer fazer a chamda de API / HTTP usando o useEffect 
+
+
+- Agente so vai fazer chamadas utilizando o getServerSideProps, para trazer informacoes para nossa pagina que agente necessariamente, precisa q estejam disponiveis assim que a pagina for exibida em tela, ou seja, somente informacoes que sao cruciais, estarem em tela, como para
+ 1. Autentication
+ 2. Bando de Dados
+ 3. indexadores
+ 4. bots 
+ 5. crowlers
+ 6. Fazer uma chamda API que precisa estar escondida do usuario final, pq ela so fica visivel no back-end
+ 7. ou qualquer coisa semelhante
+
+
+### Buscando produtos do Stripe
+
+- o caso que vamos rodar aqui eh um que precisa estar escondido do client / front
+- utilizando assim o
+- getServerSideProps
+
+- no stripe agente tem 2 chaves de API a prublic e a secret 
+- a **public** apesar de ser public que voce nao precisa se preocupar que eh um tipo de chave que serve para criar checkout em casos muito especificos
+- a **secret** eh a que da acesso agente listar produtos por exemplo, acesso a todas as funcionalidades do stripe 
+
+- como agente vai usar a chave secret para buscar a lista de products, pq ela que da acesse a lista de products,
+
+- **getServerSideProps** eh o melhor pra gente colocar isso, pq o codigo que agente colocar aqui dentro, nao vai estar visivel para o usuario final, entao ele vai estar executando em uma camada na qual o usuario nao tem acesso
+
+- sendo assim dentro do getServerSideProps podemos colocar codigos sensiveis 
+codigos
+	1. Autentication
+	2. Bando de Dados
+	
+- tudo isso pode ir dentro do getServerSideProps 
+
+- vamos comecar instalando uma biblioteca chamada
+- stripe
+- que eh a SDK javaScrip do stripe
+- code
+	
+ + npm i stripe
+
+ + /src/lib/stripe.ts
+ 
+ +
+import Stripe from 'stripe'
+
+export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+  apiVersion: '2022-11-15',
+  appInfo: {
+    name: 'Ignite Shop',
+  }
+})
+*####*
+
+- eu passo esse *appInfo*, pq assim todas as chamadas que agente fizer no Stripe, elas vao ficar num log la dentro do nosso dash bo.. stripe e la vai aparecer o nome da application que fez a requisicao, no nosso caso 'Ignite Shop'
+
++ pages/index.tsx
+
+import { stripe } from "@/lib/stripe";
+import { GetServerSideProps } from "next";
+
+
+
+export const getServerSideProps: GetServerSideProps = async () => {
+  const response = await stripe.products.list()
+
+  console.log(response.data)
+
+  return {
+    props: {
+      list: [1, 2, 3]
+    }
+  }
+}
+
+- quando voce nao vai querer todos os dados, uma dica eh voce fazer a transformacao dos dados 
+- ou seja o que eh uma transformacao dos dados no fim das contas ?
+- eh voce criar uma nova lista de produtos, porem somente com os dados que voce quer
+
+- eu crio um novo objeto so com os dados que eu quero 
+
+ +
+export const getServerSideProps: GetServerSideProps = async () => {
+  const response = await stripe.products.list()
+
+  const products = response.data.map(product => {
+    return {
+      id: product.id,
+      name: product.name,
+      imageUrl: product.images,
+    }
+  })
+
+  console.log(response.data)
+
+  return {
+    props: {
+      list: [1, 2, 3]
+    }
+  }
+}
+*###*
+
+- o Stripe tem um conceito que ele chama de Expanding Responses
+- *Exppanding Responses* eh expandir um relacionamento dentro de uma resposta
+
+- por exemplo quando eu venho na listagem de products 
+
+ + stripe.com/docs/api/products/object
+ 
+- quando eu pego um produto 
+- temos uma tag 
+
+ + default_price string EXPANDABLE
+ 
+- Esse default_price retorna o id do relacionamento do preco com o product 
+- porem eu posso fazer um EXPANDABLE disso aqui e ai ele retorna o objeto inteiro do preco e nao so o ID, entao isso vale para varios relacionamentos aqui dentro do Stripe 
+
+- com o default_price eu consigo acessar as propriedades do preco 
+
+ + src/pages/index.tsx
+ 
+export const getServerSideProps: GetServerSideProps = async () => {
+  const response = await stripe.products.list({
+    expand: ['data.default_price']
+  })
+
+- ai o preco para eu pegar essas informacoes dele 
+
+ + src/pages/index.tsx
+
+  const products = response.data.map(product => {
+    return {
+      id: product.id,
+      name: product.name,
+      imageUrl: product.images[0],
+      price: product.default_price,
+    }
+  })
+
+
+- porem o default_price ele eh o id do preco, como eu falei antes, pq ele nao entende que eu fiz um expand aqui no default price, entao ele nao entende que isso aqui
+- price: product.default_price,
+- eh o objeto que contem todos os dados do preco, ele acho que isso eh so um id 
+- o que fazemos nesse caso
+- 
+
+- sempre que for salvar precos ou lidar com precos eh sempre bom salvar em centavos pq dai nao tem problema com virgula, com problema de flout
+- voce pode sempre que for salvar em Banco de Dados muitiplica o preco por * 100 
+- ai quando voce vai trabalhar com o preco / 100
+
+
+ + 
+export const getServerSideProps: GetServerSideProps = async () => {
+  const response = await stripe.products.list({
+    expand: ['data.default_price']
+  })
+
+  const products = response.data.map(product => {
+    
+  const price = product.default_price as Stripe.Price
+
+  return {
+    id: product.id,
+    name: product.name,
+    imageUrl: product.images[0],
+    price: price.unit_amount / 100,
+  }
+  })
+
+  console.log(response.data)
+
+  return {
+    props: {
+      products,
+    }
+  }
+}
+
+### especificar dominios de imagem Next config
+
+ + next.config.js
+
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  reactStrictMode: true,
+
+  images: {
+    domains: [
+      'files.stripe.com',
+    ]
+  }
+}
+
+- salva, reinicia o servidor 
+
+
+### utilizando SSG - static side generation
+
+- **getStaticProps**
+
+- ele nao roda a cada requisicao feita para a pagina, ele vai rodar somente no momento que o Next estiver criando uma versao statica uma versao de cash daquela pagina 
+
+- isso acontece no build da nossa aplication
+- quando agente coloca nossa aplication em producao 
+- ele procura por todas as paginas que precisao ser staticas
+- que tenha o getStaticProps e gera uma versao statica delas 
+
+- para isso temos que executar a build da aplication e depois re startar a aplication
+
+- alem das props podemos devolver tbm um informacao chamada
+ + revalidate
+- que eh um numero em segundos 
+- entao se eu colocar um 
+ + revalidate: 10
+- o que ira acontecer eh que essa pagina ela vai ser gerado uma versao statica dela no momento que eu dou a build 
+- entao depois a cada 10s que uma pessoa acessar essa pagina o next por de baixo dos panos, vai criar uma nova versao dessa pagina e todos os usuarios que acessarem nesse intervalo de 10seg eles vao consumir um cash statico, uma versao statica do HTML dessa pagina, que ja foi criada previamente, por um acesso de outro usuario
+
+- importante lembrar que quando usamos
+- getStaticProps
+- agente nao tem acesso ao contexto da requisicao 
+- nem o req nem o res
+- quando agente usa o getStaticProps 
+- agente nao consegue obter informacoes como usuario logado, cokies ou qualquer coisa assim 
+
+- pq o getStaticProps ele eh executado no momento que eu dou a build 
+
+- se em algum momento essa requisicao para API ela precisar de algum cokie de alguma informacao do usuario logado ai nao tem como ser uma pagina statica 
+- pq paginas staticas sao aquelas paginas que elas vao ser iguais, para todos os usuarios que acessarem elas, se a minha pagina ela tem alguma informacao 
+- que precisa vir aqui no Server Side que eh dinamica, que precisa de um ID de usuario ou alguma informacao de usuario logado por exemplo, ja nao vai funcionar
+- eu nao posso criar uma versao estatica daquela pagina se nao todos os usuarios, eles acabariam vendo informacoes iguais, informacoes de outros usuarios 
+
+**importante** 
+- Entender quando que usamos SSG Static Side Generation 
+- ou quando agente um useEffect
+
+
+### Formatando preco
+
+### Navegação via Link Next
+
+- <Product> eh uma tag a = ancora que podemos aplicar o href={}
+- isso ira direcionar o usuario para alguma outra pagina
+
+- Next oferece para agente um component que agente consegue importar 
+
+ + import Link from 'next/link'
+
+- agente consegue usar esse componente em volta da nossa ancora 
+
+### Estrutura da página de produto
+
+ + src/styles/pages/product.ts
+ 
+### Carregando dados do produto
+
+- 3 tipos de carregamento 
+
+ + Tradional SPA
+ + Next SSR
+ + Next SSG
+
+- se nossa pagina nao depende de dados do contexto atual como cokies, usuario autenticado ou qualquer coisa semelhante e nao tem problema essa pagina ficar salva em cash por um tempo o melhor eh usarmos **Next SSG geracao statica**
+
+- caso contrario se algumas dessas condicoes nao fossem satisfeitas agente faria o carregamento utilizando o **Next SSR** que agente ainda vai fazer mais pra frente
+
+### SSG com parâmetro dinâmico
+
+ +
+export const getStaticPaths: GetStaticPaths = async () => {
+  return {
+    paths: [
+      { params: { id: 'prod_NiK330yNZnRkAj'} }
+    ],
+    fallback: false,
+  }
+}
+
+### Fallback do SSG
+
+ + 
+export const getStaticPaths: GetStaticPaths = async () => {
+  return {
+    // carrega aqui os produdos mais acessados
+    // ou posts mais acessadois
+    paths: [
+      { params: { id: 'prod_NiK330yNZnRkAj'} }
+    ],
+    fallback: true,
+    // fallback: 'blocking',
+  }
+}
+
+### Prefetch de links Next
+
+- quando existe a possibilidade do usuario clicar no link ele faz um prefetch daquela pagina para quano o usuario clicar, ja estara carregado 
+
+<Link key={product.id} href={`/product/${product.id}`} prefetch={false}>
+
+- eh um feature muito legal, mais nao pode ser feito em muitos links se nao pesa o sistema
+
+### API routes no Next.js
+
+- Apesar de nao ser o mais aconselhado para todo tipo de projecto, para muitos tipos de projectos e para alguns tipos de funcionalidades, faz sentido agente ter rotas back-end dentro do nosso front-end 
+- Isso se da principalmente em casos onde,
+- agente nao tenha a camada back-end (API REST) agente nao tenha uma api externa 
+- dai agente pode criar umas rotas back-end no servidor Next.js(servidor Node.js) para fazer funcionalidades simples 
+- ou quando agente tem alguma funcionalidade que quer incluir na nossa aplication que ela precisa executar pelo lado do servidor, mas ela eh algo especifica da web / app web da nossa aplication 
+- dai vai no Next(servidor Node.js)
+
+- para eu criar rotas na minha aplication que elas sao acessadas, sao disponibilizadas por esse Next(servidor Nodejs)
+
+ + src/pages/api/hello.ts
+ 
+import { NextApiRequest, NextApiResponse } from "next";
+
+export default function handler(req: NextApiRequest, res: NextApiResponse) {
+  return res.json({ message: 'hello World'})
+}
+
+
+- para acessar
+ + http://localhost:3000/api/hello
+
+- todo o codigo que roda aqui dentro eh um server side entao nao preciso me preocupar com dados sensiveis por exemplo, 
+ + posso fazer acesso ao banco, 
+ + posso usar uma secret key da vida, que da acesso a informacoes confidenciais da minha conta do Stripe 
+
+- agora que estamos com esse codigo aqui vamos utulizar essas rotas API aqui para conseguir fazer algumas operacoes, acontecerem pelo lado do servidor, porem operacoes que sao baseadas em acoes do usuario 
+
+- pq ate entao agente viu que nas paginas da nossa aplication 
+- agente ate consegue executar com o getStaticProps ou getServerSideProps codigos que vao rodar pelo lado do servidor por essa camada do node e que agente pode fazer chamadas sensiveis para API e tudo mais 
+
+- so que tudo isso aqui tanto getStaticProps quando o getServerSideProps eles executam somente no carregamento da pagina, somente no primeiro load da pagina se eu precisar executar alguma acao pelo Server Side(ou seja algo sensivel) que venha atravez de uma acao do usuario um click de um botao ou qualquer coisa assim 
+- nao tem como usar o metodo getStaticProps ou getServerSideProps 
+
+- ai nesse caso precisamos criar essa rota API que agente chama no Next de **API routes**
+
+
+> Checkout no Stripe
+
+https://stripe.com/docs/payments/checkout/manual-payment-intent-cancellation-migration
+
+- agora que agente prendeu a criar rotas Server Side dentro do Next para que que agente vai utilizar essa rota aqui na nossa aplication 
+
+- dentro da api da documentation da API do Stripe
+- tem uma API aqui dentro que eh de Checkout 
+- o Stripe
+- ou melhor agente criar o nosso carrinho so pela nossa aplication caso agente queira,
+- nao eh necessario criar um carrinho dentro da api do stripe 
+- porem quando agente vai finalizar a compra, que agente quer indicar
+- falando que esse usuario quer comprar esse produto nessas quantidades e por ai vai
+
+- agente precisa criar uma checkout/session sessao de checkout 
+
+- quando agente cria o checkout session eh nela que agente passa, quais sao os items que agente quer q estejam no carrinho, quais sao os dados do cliente caso o cliente tenha informado algum tipo de dado pela nossa aplication, se nao ele vai informar diretamente tudo dentro do stripe 
+
+- ou seja um checkout session eh a forma do usuario finalizar uma compra dentro do stripe 
+
+- o stripe tem o proprio checkout dele, agente nao vai digamos fazer um checkout de transparente ou seja, onde a pessoa coloca os dados do cartao dentro da nossa aplication, na verdade agente vai redirecionar a pessoa pro checkout do stripe, a pessoa vai finalizar o pagamento dela dentro e quando ela finalizar o pagamento o stripe redireciona essa pessoa divolta pra dentro da nossa aplication, a qual vai poder ali finalizar e entao ver os dados que ela comprou, mostrar o extrato se deu certou ou nao 
+
+- para isso vamos usar uma API aqui do Next 
+
+- pq essa checkout session ela nao pode ser criada cliente side, ela precisa ser criada atravez do server side 
+- que eu preciso usar nossa secret key de producao, eh algo que precisa ficar escondido dos usuarios 
+
+- esse checkout vem atravez de uma acao do usuario, um click de comprar dentro da pagina do produto eh por isso que eu nao posso utilizar fazer a criacao dessa checkout session dentro de um getServerSidoPros 
+
+- entao nesse casos agente usa uma API root
+
+- open
+- src/pages/api/hello.ts
+
+
+- http://localhost:3000/api/checkout
+- direciona para a pagina de pagamento
+
+ +
+https://checkout.stripe.com/c/pay/cs_test_a1qzzKDFd742innH3XBiiWJRPhKiLBGTjziMDD7VAh4QuddUWrIhHfOK1o#fidkdWxOYHwnPyd1blpxYHZxWjA0SHJxQXZDUmtNbDNgbTZTMEJkcGB2TldgfERtSWBINl18RlM1XVREcHExZFdtazdIYEx3fVFndmpCaERoUVxXVzJ%2FTmtdaGhEVTw1T2pVSTF3Tm9qX0IwNTVhTWdpaTFmYCcpJ2N3amhWYHdzYHcnP3F3cGApJ2lkfGpwcVF8dWAnPyd2bGtiaWBabHFgaCcpJ2BrZGdpYFVpZGZgbWppYWB3dic%2FcXdwYHgl
+
+- stripe card test
+- voce tem numeros de cartoes que voce pode usar para testar uma compra de forma positiva e tem como testar uma compra negada
+- fazendo de forma manual dar certo ou dar errado o pagamento 
+
+
+### Botão de comprar
+
+- instalar biblioteca 
+
+ + npm i axios 
+
+### Estrutura de sucesso
+
+ + src/styles/pages/success.ts
+
+
+### Dados da compra no sucesso
+
+- Podemos escolher a forma de fetch de dados de 3 formas
+
+ + Client Side (useEffect)   // nao server para essa app
+ + getServerSideProps				// melhor opcao
+ + getStaticProps            // nao serve para essa pagina 
+
+
+### Redirect no SSR
+
+### Trabalhando com SEO
